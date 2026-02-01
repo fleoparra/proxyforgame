@@ -185,14 +185,6 @@ test.describe('Lifeforms costs Calculator Page', () => {
         // Researches - After SC/LC capacity increase 10
         expect(researchesAfterCapIncr.sc).toBe(15154);
         expect(researchesAfterCapIncr.lc).toBe(3031);
-
-        // Log values for verification
-        console.log('Buildings - Initial SC/LC:', buildingsInitial);
-        console.log('Buildings - After Hyper(10):', buildingsAfterHyper);
-        console.log('Buildings - After CapIncr(10):', buildingsAfterCapIncr);
-        console.log('Researches - Initial SC/LC:', researchesInitial);
-        console.log('Researches - After Hyper(10):', researchesAfterHyper);
-        console.log('Researches - After CapIncr(10):', researchesAfterCapIncr);
     });
 
     // Helper function to test second outer tab for a specific lifeform
@@ -333,13 +325,6 @@ test.describe('Lifeforms costs Calculator Page', () => {
         expect(researchesAfterHyper.lc).toBe(expectedData.researches.afterHyper.lc);
         expect(researchesAfterCapIncr.sc).toBe(expectedData.researches.afterCapIncr.sc);
         expect(researchesAfterCapIncr.lc).toBe(expectedData.researches.afterCapIncr.lc);
-
-        console.log(`${lifeformName} Buildings - Initial SC/LC:`, buildingsInitial);
-        console.log(`${lifeformName} Buildings - After Hyper(10):`, buildingsAfterHyper);
-        console.log(`${lifeformName} Buildings - After CapIncr(10):`, buildingsAfterCapIncr);
-        console.log(`${lifeformName} Researches - Initial SC/LC:`, researchesInitial);
-        console.log(`${lifeformName} Researches - After Hyper(10):`, researchesAfterHyper);
-        console.log(`${lifeformName} Researches - After CapIncr(10):`, researchesAfterCapIncr);
     }
 
     test('[all items - multiple levels / human] SC/LC counts update correctly', async ({ page }) => {
@@ -387,8 +372,8 @@ test.describe('Lifeforms costs Calculator Page', () => {
         });
     });
 
-    test('[all items - multiple levels / kaeltas] SC/LC counts update correctly', async ({ page }) => {
-        await testSecondOuterTab(page, '4', 'Kaeltas', {
+    test('[all items - multiple levels / Kaleesh] SC/LC counts update correctly', async ({ page }) => {
+        await testSecondOuterTab(page, '4', 'Kaleesh', {
             buildings: {
                 initial: { sc: 839, lc: 168 },
                 afterHyper: { sc: 600, lc: 120 },
