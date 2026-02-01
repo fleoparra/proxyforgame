@@ -7,6 +7,7 @@
     "validate-translations": "node scripts/validate-translations.js",
     "sync-translations": "node scripts/sync-translations.js",
     "sync-translations:report": "node scripts/sync-translations.js --report",
+    "sync-translations:show": "node scripts/sync-translations.js --report --show-keys",
     "sync-translations:fix": "node scripts/sync-translations.js --fix",
     "sync-translations:dry": "node scripts/sync-translations.js --dry-run",
     "check-test-coverage": "node scripts/check-test-coverage.js",

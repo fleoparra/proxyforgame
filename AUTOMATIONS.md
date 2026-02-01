@@ -15,7 +15,8 @@ The automation system provides:
 ```bash
 # Translation Management
 npm run validate-translations       # Validate all locale files
-npm run sync-translations:report    # Show translation completion
+npm run sync-translations:report    # Show translation completion (counts)
+npm run sync-translations:show      # Show translation completion (with keys)
 npm run sync-translations:fix       # Sync missing translation keys
 npm run sync-translations:dry       # Preview changes
 
@@ -54,9 +55,17 @@ Synchronizes all locale JSON files with the source (en.json), adds missing trans
 
 **Usage:**
 ```bash
-npm run sync-translations:report   # Show completion status
+npm run sync-translations:report   # Show completion status (counts only)
+npm run sync-translations:show     # Show completion status with missing keys listed
 npm run sync-translations:fix      # Add missing keys to all locales
+npm run sync-translations:dry      # Preview changes without modifying files
 ```
+
+**Options:**
+- `--report` - Show completion percentage and missing key counts
+- `--show-keys` - Also list each missing translation key with source values
+- `--fix` - Add missing keys with placeholder values
+- `--dry-run` - Preview changes without modifying files
 
 ### Translation Validation Script
 
@@ -65,7 +74,7 @@ npm run sync-translations:fix      # Add missing keys to all locales
 Scans locale files for missing translation keys, reports empty/null values, and detects extra keys.
 
 **Current Status:**
-- **Total keys:** 658 across 13 languages
+- **Total keys:** 666 across 13 languages
 - **Best coverage:** US (100%), DE (97.7%)
 - **Needs attention:** PT, SK (96.4%)
 
@@ -221,14 +230,19 @@ npm run generate-docs graviton      # Generate specific calculator docs
 
 1. Add keys to `www/locale/en.json`
 
-2. Sync to all locales:
+2. Check which locales are missing keys:
+   ```bash
+   npm run sync-translations:show    # Shows missing keys per language
+   ```
+
+3. Sync to all locales:
    ```bash
    npm run sync-translations:fix
    ```
 
-3. Replace `[TODO: ...]` placeholders in each locale file
+4. Replace `[TODO: ...]` placeholders in each locale file
 
-4. Validate:
+5. Validate:
    ```bash
    npm run validate-translations
    ```

@@ -212,7 +212,7 @@ function syncLocaleFile(sourceData, localeFile, dryRun = false) {
 /**
  * Generate completion report
  */
-function generateReport(sourceData, localeFiles) {
+function generateReport(sourceData, localeFiles, showMissingKeys = false) {
   console.log('\n' + colorize('═════════════════════════════════════════════════════════', colors.cyan));
   console.log(colorize('              Translation Completion Report', colors.cyan));
   console.log(colorize('═════════════════════════════════════════════════════════', colors.cyan));
@@ -237,8 +237,10 @@ function generateReport(sourceData, localeFiles) {
 
     results.push({
       lang: langCode.toUpperCase(),
+      langCode,
       present: presentKeys,
       missing: missingKeys.length,
+      missingKeys,
       percentage,
       statusIcon,
       status
@@ -264,6 +266,22 @@ function generateReport(sourceData, localeFiles) {
   }
 
   console.log(colorize('──────────────────────────────────────────────────────────', colors.gray));
+
+  // Show missing keys if requested
+  if (showMissingKeys) {
+    for (const result of results) {
+      if (result.missing > 0) {
+        console.log(`\n${colorize(result.lang, result.status)} missing keys:`);
+        for (const { key, sourceValue } of result.missingKeys) {
+          const valuePreview = typeof sourceValue === 'string'
+            ? `"${sourceValue.substring(0, 50)}${sourceValue.length > 50 ? '...' : ''}"`
+            : JSON.stringify(sourceValue);
+          console.log(`  ${colorize('•', colors.gray)} ${key}`);
+          console.log(`    ${colorize(valuePreview, colors.gray)}`);
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -274,6 +292,7 @@ function main() {
   const dryRun = args.includes('--dry-run');
   const reportOnly = args.includes('--report');
   const fix = args.includes('--fix');
+  const showKeys = args.includes('--show-keys');
 
   // Load source file
   const sourceData = loadJsonFile(SOURCE_FILE);
@@ -287,7 +306,7 @@ function main() {
 
   // Generate report
   if (reportOnly || dryRun) {
-    generateReport(sourceData, localeFiles);
+    generateReport(sourceData, localeFiles, showKeys);
     if (dryRun) {
       console.log('\n' + colorize('Dry run mode - no files will be modified', colors.yellow));
       console.log('Run with --fix to apply changes');
@@ -335,7 +354,7 @@ function main() {
   }
 
   // Show final report
-  generateReport(sourceData, localeFiles);
+  generateReport(sourceData, localeFiles, showKeys);
 }
 
 // Run if called directly
