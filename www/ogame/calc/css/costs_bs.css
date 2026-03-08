@@ -1,0 +1,311 @@
+/*
+ * Costs Calculator - Bootstrap 5 Styles
+ * Migrated from jQuery UI to Bootstrap 5.3.8
+ */
+
+/* ==========================================================================
+   MAIN CONTAINER
+   ========================================================================== */
+
+#costs {
+  max-width: 890px;
+  margin: 0 auto;
+}
+
+#lfcosts {
+  max-width: 930px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   PANEL STYLING
+   ========================================================================== */
+
+.ui-panel {
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: var(--bs-body-bg);
+}
+
+.c-ui-widget-content {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.main-header {
+  width: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 4px;
+  margin: 2px;
+}
+
+.subheader {
+  text-align: center;
+  font-weight: 600;
+  margin: 0px !important;
+}
+
+.ui-subheader {
+  margin-bottom: 7px;
+}
+
+/* ==========================================================================
+   INPUT SIZING
+   ========================================================================== */
+
+.level-input {
+  width: 40px;
+  text-align: center;
+  margin-left: 2px;
+  margin-right: 8px;
+}
+
+.fleet-input {
+  width: 50px;
+  text-align: center;
+  margin-left: 2px;
+  margin-right: 8px;
+}
+
+.res-input {
+  width: 100px;
+  text-align: center;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.input-2columns {
+  width: 35px;
+  text-align: center;
+}
+
+.input-3columns {
+  width: 45px;
+  text-align: center;
+}
+
+.input-in-table {
+  padding: 2px 4px;
+}
+
+.ui-input-margin {
+  margin-left: 2px;
+  margin-right: 8px;
+}
+
+/* Checkbox and radio button spacing */
+#technocrat,
+#engineer,
+#geologist,
+#admiral,
+#commander,
+#research-bonus,
+#full-numbers {
+  margin-left: 0;
+  margin-right: 5px;
+}
+
+/* ==========================================================================
+   TAB STYLING
+   ========================================================================== */
+
+/* Main tabs */
+#tab-0,
+#tab-1,
+#tab-2 {
+  padding: 0;
+}
+
+/* Inner tabs */
+#tab-0-1,
+#tab-1-1,
+#tab-0-2,
+#tab-0-3,
+#tab-0-4,
+#tab-0-5,
+#tab-0-6,
+#tab-1-2,
+#tab-1-3,
+#tab-1-4 {
+  padding: 0.3em 0;
+}
+
+/* Tab button adjustments */
+.nav-tabs .nav-link {
+  padding: 0.3em 1em;
+}
+
+/* ==========================================================================
+   TABLE STYLING
+   ========================================================================== */
+
+.lined {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lined th {
+  background-color: var(--bs-tertiary-bg);
+  font-weight: 600;
+  padding: 4px 8px;
+  border: 1px solid var(--bs-border-color);
+}
+
+.lined td {
+  border: 1px solid var(--bs-border-color);
+  padding: 4px 8px;
+  width: auto;
+}
+
+.lined tr.odd {
+  background-color: var(--bs-table-striped-bg);
+}
+
+.lined tr.even {
+  background-color: transparent;
+}
+
+/* Minimum width column */
+td.min {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   IRN DIALOG (MODAL)
+   ========================================================================== */
+
+#irn-calc .modal-dialog {
+  max-width: 450px;
+}
+
+.irn-calc-info {
+  padding: 3px;
+  text-align: center;
+}
+
+#lab-levels-div {
+  height: 228px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+#open-llc-dialog {
+  margin-right: 8px;
+  vertical-align: text-top;
+  cursor: pointer;
+}
+
+#research-lab-level {
+  margin-right: 2px;
+}
+
+#reset {
+  cursor: pointer;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #dc3545;
+  border-radius: 8px;
+  margin-right: 0.2rem;
+}
+
+/* ==========================================================================
+   UTILITY CLASSES
+   ========================================================================== */
+
+.no-mp {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Border utilities */
+.border-n {
+  border-top: none !important;
+}
+
+.border-s {
+  border-bottom: 1px solid var(--bs-border-color) !important;
+}
+
+.border-w {
+  border-left: 1px solid var(--bs-border-color) !important;
+}
+
+.border-e {
+  border-right: 1px solid var(--bs-border-color) !important;
+}
+
+/* ==========================================================================
+   WARNING MESSAGES
+   ========================================================================== */
+
+#warning {
+  padding: 10px;
+  margin: 4px;
+  text-align: center;
+  background-color: var(--bs-warning-bg-subtle);
+  border-radius: var(--bs-border-radius);
+  color: var(--bs-body-color);
+}
+
+#hint {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: var(--bs-info-bg-subtle);
+  border-radius: var(--bs-border-radius);
+}
+
+/* ==========================================================================
+   SPECIAL INPUTS
+   ========================================================================== */
+
+#research-cost-reduction,
+#research-time-reduction {
+  margin-right: -5px;
+}
+
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+
+@media (max-width: 992px) {
+  #costs {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .level-input,
+  .fleet-input {
+    width: 50px;
+  }
+
+  .lined td,
+  .lined th {
+    padding: 2px 4px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #costs {
+    padding: 5px;
+  }
+
+  .level-input,
+  .fleet-input {
+    width: 45px;
+  }
+
+  .nav-tabs .nav-link {
+    padding: 0.2em 0.6em;
+    font-size: 0.9rem;
+  }
+}

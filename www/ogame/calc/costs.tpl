@@ -14,28 +14,25 @@
 		$pfgPath = "D:\Programming\JS\pfg.wmp\www";
 	};
 ?>
-	<link id="light-theme" type="text/css" href="/css/redmond/jquery.ui.all.css" rel="stylesheet"/>
-	<link id="dark-theme" type="text/css" href="/css/dark-hive/jquery.ui.all.css" rel="stylesheet" disabled="disabled"/>
-	<link type="text/css" href="/css/jquery.ui.spinbtn.css" rel="stylesheet"/>
+	<!-- Bootstrap 5 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"/>
+
+	<!-- Custom styles -->
 	<link type="text/css" href="/css/langs.css?v=<?php echo filemtime($pfgPath.'/css/langs.css'); ?>" rel="stylesheet" />
 	<link type="text/css" href="/css/common.css?v=<?php echo filemtime($pfgPath.'/css/common.css'); ?>" rel="stylesheet"/>
-	<link type="text/css" href="/ogame/calc/css/costs.css?v=<?php echo filemtime($pfgPath.'/ogame/calc/css/costs.css'); ?>" rel="stylesheet"/>
-	
-<?php if ( $_SERVER['SERVER_NAME'] == 'proxyforgame.com'): ?>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
-<?php elseif ( $_SERVER['SERVER_NAME'] == 'pfg.wmp'): ?>
-	<script type="text/javascript" src="/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
-<?php else: ?>
-	<script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
-	<script type="text/javascript" src="/js/jquery-ui-1.8.11.min.js"></script>
-<?php endif; ?>
-	<script type="text/javascript" src="/js/jquery.cookie.js"></script>
-	<script type="text/javascript" src="/js/jquery.ui.spinbtn.js"></script>
+	<link type="text/css" href="/ogame/calc/css/costs_bs.css?v=<?php echo filemtime($pfgPath.'/ogame/calc/css/costs_bs.css'); ?>" rel="stylesheet"/>
+
+	<!-- Bootstrap 5 JS Bundle -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Utility libraries -->
 	<script type="text/javascript" src="/js/utils.js?v=<?php echo filemtime($pfgPath.'/js/utils.js'); ?>"></script>
-	<script type="text/javascript" src="/ogame/calc/js/common.js?v=<?php echo filemtime($pfgPath.'/ogame/calc/js/common.js'); ?>"></script>	
-	
+	<script type="text/javascript" src="/ogame/calc/js/common.js?v=<?php echo filemtime($pfgPath.'/ogame/calc/js/common.js'); ?>"></script>
+
+	<!-- DOM Utilities (jQuery replacement) -->
+	<script type="text/javascript" src="/ogame/calc/js/costs-dom-utils.js?v=<?php echo filemtime($pfgPath.'/ogame/calc/js/costs-dom-utils.js'); ?>"></script>
+
 	<!-- New modular calculator architecture -->
 	<script type="text/javascript" src="/ogame/calc/js/costs-core.js?v=<?php echo filemtime($pfgPath.'/ogame/calc/js/costs-core.js'); ?>"></script>
 	<script type="text/javascript" src="/ogame/calc/js/costs-data-collector.js?v=<?php echo filemtime($pfgPath.'/ogame/calc/js/costs-data-collector.js'); ?>"></script>
@@ -97,68 +94,38 @@
 <?php require_once('../../cookies.tpl'); ?>
 </head>
 
-<body class="ui-widget">
+<body>
 
-<table id="vtable" cellspacing="2" cellpadding="0" border="0"><tr>
-<td id="vtablesb"><?php require_once('../../sidebar.tpl'); ?></td>
-<td id="vtablec">
-<?php require_once('../../topbar.tpl'); ?>
-
-<div id="irn-calc" title="<?= $l['llc-dialog-title'] ?>">
-	<div class="ui-widget-content ui-corner-all width: auto; ">
-		<div>
-			<table align="center">
-				<tr>
-					<td><?= $l['irn-level'] ?></td>
-					<td><input id="irn-level" type="text" name="irn-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" /></td>
-					<td><?= $l['planets-count'] ?></td>
-					<td>
-					<input id="planetsSpin" type="text" class="ui-corner-all input-2columns spin-button" value="8" />
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div class="irn-calc-info">
-			<?= $l['llc-dialog-info'] ?>
-		</div>
-		<div id="lab-levels-div">
-			<table id="lab-levels-table" class="lined" width="100%;" cellpadding="0" cellspacing="1" border="0">
-				<tr>
-					<th><?= $l['planet'] ?></th><th><?= $l['level'] ?></th><th><?= $l['start'] ?></th>
-				</tr>
-				<?php for ($i = 1; $i <= 8; $i++): ?>
-				<tr class="<?= ($i % 2) === 1 ? 'odd' : 'even' ?>">
-					<td align="center"><?= $l['planet-num'] ?><?=$i?></td>
-					<td align="center" width="20%;"><input type="text" id="lablevel_<?=$i?>" name="lablevel_<?=$i?>" class="ui-state-default ui-corner-all ui-input input-3columns input-in-table" value="0" /></td>
-					<td align="center" width="20%;"><input type="radio" id="labchoice_<?=$i?>" name="start-pln" disabled="disabled"/></td>
-				</tr>
-				<?php endfor; ?>
-			</table>
-		</div>
-		<div class="irn-calc-info">
-			<span><?= $l['resulting-lab-level'] ?></span>&nbsp;<span id="resulting-level"><b>?</b></span>
-		</div>
-	</div>
-</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2"><?php require_once('../../sidebar_bs.tpl'); ?></div>
+		<div class="col-md-10">
+		<?php require_once('../../topbar.tpl'); ?>
 
 <div id="costs">
-	<div class="ui-widget-content ui-corner-all">
-		<div id="reset" class="ui-state-error ui-corner-all" title="<?= $l['reset'] ?>"><span class="ui-icon ui-icon-arrowrefresh-1-w"></span></div>
-		<div class="ui-widget-header ui-corner-all c-ui-main-header"><?= $l['title'] ?></div>
-		<div>
-			<div id="general-settings-panel" class="ui-widget-content c-ui-widget-content ui-corner-all ui-panel">
-				<div id="general-settings">
+	<div class="border rounded position-relative">
+		<div class="d-inline-block d-flex align-items-center">
+			<div class="bg-body-secondary text-primary-emphasis rounded main-header text-center flex-grow-1">
+				<?= $l['title'] ?>
+			</div>
+			<div id="reset" class="top-0 end-0 d-flex align-items-center justify-content-center bg-danger-subtle" title="<?= $l['reset'] ?>">
+				<i class="bi bi-arrow-counterclockwise" style="color: #dc3545; font-size: 1.25rem;"></i>
+			</div>
+		</div>
+		<div id="general-settings-panel" class="border rounded m-1">
+			<p class="border rounded subheader bg-primary-subtle"><?= $l['parameters'] ?></p>
+			<div id="general-settings">
 					<table cellpadding="2" cellspacing="0" border="0" align="center">
 						<tr>
 							<td><label for="robot-factory-level"><?= $l['robot-factory'] ?> (<?= $l['planet'] ?>)</label></td>
-							<td><input id="robot-factory-level" type="text" name="robot-factory-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" /></td>
+							<td><input id="robot-factory-level" type="text" name="robot-factory-level" class="form-control form-control-sm level-input ui-input-margin" value="0" /></td>
 							<td><label for="nanite-factory-level"><?= $l['nanite-factory'] ?></label></td>
-							<td><input id="nanite-factory-level" type="text" name="nanite-factory-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" /></td>
+							<td><input id="nanite-factory-level" type="text" name="nanite-factory-level" class="form-control form-control-sm level-input ui-input-margin" value="0" /></td>
 							<td><label for="shipyard-level"><?= $l['shipyard'] ?></label></td>
-							<td><input id="shipyard-level" type="text" name="shipyard-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" /></td>
+							<td><input id="shipyard-level" type="text" name="shipyard-level" class="form-control form-control-sm level-input ui-input-margin" value="0" /></td>
 							<td><label for="universe-speed"><?= $l['universe-speed'] ?></label></td>
 							<td>
-								<select id="universe-speed" name="universe-speed" class="ui-state-default ui-corner-all ui-input ui-input-margin">
+								<select id="universe-speed" name="universe-speed" class="form-select form-select-sm ui-input-margin">
 									<option value="1" selected="selected">1</option>
 									<option value="2">2</option>
 									<option value="3">3</option>
@@ -178,25 +145,27 @@
 								<table cellpadding="0" cellspacing="0" border="0">
 									<tr>
 										<td>
-										<input id="research-lab-level" type="text" name="research-lab-level" class="ui-state-default ui-corner-all ui-input level-input" value="0"/>
+										<input id="research-lab-level" type="text" name="research-lab-level" class="form-control form-control-sm level-input" value="0"/>
 										</td>
 										<td>
-										<div id="open-llc-dialog" class="ui-state-default ui-corner-all" title="<?= $l['calculate'] ?>"><span class="ui-icon ui-icon-calculator"></span></div>
+										<button id="open-llc-dialog" class="btn btn-outline-primary btn-sm" type="button" title="<?= $l['calculate'] ?>">
+											<i class="bi bi-calculator"></i>
+										</button>
 										</td>
 									</tr>
 								</table>
 							</td>
-							<td><input id="technocrat" type="checkbox" name="technocrat" class="ui-state-default ui-corner-all ui-input ui-input-margin"/><label for="technocrat"><?= $l['technocrat'] ?></label></td>
+							<td><input id="technocrat" type="checkbox" name="technocrat" class="form-check-input ui-input-margin"/><label for="technocrat" class="ms-1"><?= $l['technocrat'] ?></label></td>
 							<td></td>
 							<td><label for="ion-tech-level"><?= $l['ion-tech'] ?></label></td>
-							<td><input id="ion-tech-level" type="text" name="ion-tech-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" /></td>
+							<td><input id="ion-tech-level" type="text" name="ion-tech-level" class="form-control form-control-sm level-input ui-input-margin" value="0" /></td>
 							<td><label for="hyper-tech-level"><?= $l['hyper-tech'] ?></label></td>
-							<td><input id="hyper-tech-level" type="text" name="hyper-tech-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" /></td>
+							<td><input id="hyper-tech-level" type="text" name="hyper-tech-level" class="form-control form-control-sm level-input ui-input-margin" value="0" /></td>
 						</tr>
 						<tr>
 							<td><label for="research-speed"><?= $l['research-speed'] ?></label></td>
 							<td>
-								<select id="research-speed" name="research-speed" class="ui-state-default ui-corner-all ui-input ui-input-margin">
+								<select id="research-speed" name="research-speed" class="form-select form-select-sm ui-input-margin">
 									<option value="1" selected="selected">1</option>
 									<option value="2">2</option>
 									<option value="3">3</option>
@@ -219,40 +188,51 @@
 									<option value="20">20</option>
 								</select>
 							</td>
-							<td colspan="3"><input id="research-bonus" type="checkbox" name="research-bonus" class="ui-state-default ui-corner-all ui-input ui-input-margin"/><label for="research-bonus"><?= $l['research-event'] ?></label></td>
+							<td colspan="3"><input id="research-bonus" type="checkbox" name="research-bonus" class="form-check-input ui-input-margin"/><label for="research-bonus" class="ms-1"><?= $l['research-event'] ?></label></td>
 							<td></td>
 							<td><label for="robot-factory-level-moon"><?= $l['robot-factory'] ?> (<?= $l['moon'] ?>)</label></td>
-							<td><input id="robot-factory-level-moon" type="text" name="robot-factory-level-moon" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" /></td>
+							<td><input id="robot-factory-level-moon" type="text" name="robot-factory-level-moon" class="form-control form-control-sm level-input ui-input-margin" value="0" /></td>
 						</tr>
 					</table>
 					<table cellpadding="2" cellspacing="0" border="0" align="center">
 						<tr>
 							<td><label><?= $l['class'] ?>:</label></td>
-							<td><input id="class-0" type="radio" name="class" value="0" tabindex="1"/><label for="class-0"><?= $l['class-collector'] ?></label></td>
-							<td><input id="class-1" type="radio" name="class" value="1" tabindex="2"/><label for="class-1"><?= $l['class-general'] ?></label></td>
-							<td><input id="class-2" type="radio" name="class" value="2" tabindex="3"/><label for="class-2"><?= $l['class-discoverer'] ?></label></td>
+							<td><input id="class-0" type="radio" name="class" value="0" tabindex="1" class="form-check-input"/><label for="class-0" class="ms-1"><?= $l['class-collector'] ?></label></td>
+							<td><input id="class-1" type="radio" name="class" value="1" tabindex="2" class="form-check-input"/><label for="class-1" class="ms-1"><?= $l['class-general'] ?></label></td>
+							<td><input id="class-2" type="radio" name="class" value="2" tabindex="3" class="form-check-input"/><label for="class-2" class="ms-1"><?= $l['class-discoverer'] ?></label></td>
 							<td>&nbsp;</td>
-							<td><input id="full-numbers" type="checkbox" name="full-numbers" class="ui-state-default ui-corner-all ui-input ui-input-margin"/><label for="full-numbers"><?= $l['full-numbers'] ?></label></td>
+							<td><input id="full-numbers" type="checkbox" name="full-numbers" class="form-check-input ui-input-margin"/><label for="full-numbers" class="ms-1"><?= $l['full-numbers'] ?></label></td>
 						</tr>
 					</table>
 				</div>
 			</div>
-			<div id="tabs">
-				<ul>
+			<!-- Main Tabs -->
+			<ul class="nav nav-tabs" id="mainTabs" role="tablist">
+			<?php for ($i = 0; $i < count($tabTitles); $i++):?>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link <?= $i === 0 ? 'active' : '' ?>" id="tabtag-<?=$i?>" data-bs-toggle="tab" data-bs-target="#tab-<?=$i?>" type="button" role="tab">
+						<?= $l[$tabTitles[$i]] ?>
+					</button>
+				</li>
+			<?php endfor; ?>
+			</ul>
+			<div class="tab-content" id="mainTabContent">
 				<?php for ($i = 0; $i < count($tabTitles); $i++):?>
-					<li><a id="tabtag-<?=$i?>" href="#tab-<?=$i?>"><?= $l[$tabTitles[$i]] ?></a></li>
-				<?php endfor; ?>
-				</ul>
-				<?php for ($i = 0; $i < count($tabTitles); $i++):?>
-					<div id="tab-<?=$i?>" class="ui-panel no-mp">
+					<div class="tab-pane fade <?= $i === 0 ? 'show active' : '' ?>" id="tab-<?=$i?>" role="tabpanel">
 					<?php if ($i < 2):?>
-						<div id="tabs-<?=$i?>" class="no-mp">
-							<ul>
-							<?php $colHeaders = ($i == 0)?$colHeadersAllOne:$colHeadersAllMult; ?>
-							<?php foreach ($techTypes as $j => $type) :?>
-								<li><a id="tabtag-<?=$i?>-<?=$j?>" href="#tab-<?=$i?>-<?=$j?>"><?= $l[$type] ?></a></li>
-							<?php endforeach; ?>
-							</ul>
+						<!-- Inner Tabs -->
+						<ul class="nav nav-tabs" id="innerTabs<?=$i?>" role="tablist">
+						<?php $colHeaders = ($i == 0)?$colHeadersAllOne:$colHeadersAllMult; ?>
+						<?php $firstInnerTab = array_key_first($techTypes); ?>
+						<?php foreach ($techTypes as $j => $type) :?>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link <?= $j === $firstInnerTab ? 'active' : '' ?>" id="tabtag-<?=$i?>-<?=$j?>" data-bs-toggle="tab" data-bs-target="#tab-<?=$i?>-<?=$j?>" type="button" role="tab">
+									<?= $l[$type] ?>
+								</button>
+							</li>
+						<?php endforeach; ?>
+						</ul>
+						<div class="tab-content">
 							<?php foreach ($techTypes as $j => $type):?>
 							<?php
 								if ($j == 4)
@@ -262,14 +242,14 @@
 								else
 									$colHeaders[0] = 'building';
 								if ($i == 0) {
-									if ($j == 5 || $j == 6) 
+									if ($j == 5 || $j == 6)
 										$colHeaders[1] = 'quantity';
 									else {
 										$colHeaders[1] = 'level';
 									}
 								}
 							?>
-							<div id="tab-<?=$i?>-<?=$j?>" class="ui-panel no-mp">
+							<div class="tab-pane fade <?= $j === $firstInnerTab ? 'show active' : '' ?> ui-panel no-mp" id="tab-<?=$i?>-<?=$j?>" role="tabpanel">
 								<table id="table-<?=$i?>-<?=$j?>" class="lined" cellpadding="0" cellspacing="1" border="0" width="100%">
 									<tr>
 										<th style="display: none;"></th>
@@ -292,12 +272,12 @@
 										<td style="display: none;"><?=$techID?></td>
 										<td><?=$l[$techData[$tech][0]]?></td>
 										<?php if ($i == 1): ?>
-										<td align="center"><input type="text" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0"/></td>
+										<td align="center"><input type="text" class="form-control form-control-sm level-input ui-input-margin" value="0"/></td>
 										<?php endif;?>
 										<?php if ($j == 5 || $j == 6): ?>
-											<td align="center"><input type="text" class="ui-state-default ui-corner-all ui-input fleet-input ui-input-margin" value="0"/></td>
+											<td align="center"><input type="text" class="form-control form-control-sm fleet-input ui-input-margin" value="0"/></td>
 										<?php else: ?>
-											<td align="center"><input type="text" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0"/></td>
+											<td align="center"><input type="text" class="form-control form-control-sm level-input ui-input-margin" value="0"/></td>
 										<?php endif; ?>
 										<td align="center">0</td>
 										<td align="center">0</td>
@@ -356,13 +336,12 @@
 								</table>
 							</div>
 							<?php endforeach; ?>
-						</div>
+						</div> <!-- End inner tab-content -->
 					<?php else: ?>
-						<div>
-							<table cellpadding="0" cellspacing="1" border="0" >
-								<tr>
-									<td colspan="4">
-									<select id="tech-types-select" name="tech-types-select" class="ui-state-default ui-corner-all ui-input">
+						<div class="p-2">
+							<div class="d-flex flex-column gap-1 py-1">
+								<div class="d-flex align-items-center flex-wrap gap-2">
+									<select id="tech-types-select" name="tech-types-select" class="form-select form-select-sm w-auto">
 									<?php	$techTypes = array(2 => 'buildings-planet', 3 => 'buildings-moon', 4 => 'researches'); ?>
 									<?php foreach ($techTypes as $type => $typeName) :?>
 										<optgroup label="<?=$l[$typeName]?>">
@@ -372,46 +351,37 @@
 										<?php endforeach; ?>
 										</optgroup>
 									<?php endforeach; ?>
-										</select>
-									</td>
-									<td><label for="energy-tech-level"><?= $l['energy-tech-level'] ?></label></td>
-									<td><input id="energy-tech-level" type="text" name="energy-tech-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0"/></td>
-									<td width="10px;">&nbsp;</td>
-									<td><label for="plasma-tech-level"><?= $l['plasma-tech-level'] ?></label></td>
-									<td><input id="plasma-tech-level" type="text" name="plasma-tech-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0"/></td>
-									<td width="10px;">&nbsp;</td>
-									<td><input id="engineer" type="checkbox" name="engineer" class="ui-state-default ui-corner-all ui-input ui-input-margin"/><label for="engineer"><?= $l['engineer'] ?></label></td>
-									<td width="10px;">&nbsp;</td>
-									<td><input id="admiral" type="checkbox" name="admiral" class="ui-state-default ui-corner-all ui-input ui-input-margin"/><label for="admiral"><?= $l['admiral'] ?></label></td>
-								</tr>
-							</table>
-							<table cellpadding="0" cellspacing="1" border="0" >
-								<tr>
-									<td><label for="tab2-from-level">&nbsp;<?= $l['from-level'] ?></label></td>
-									<td><input id="tab2-from-level" type="text" name="tab2-from-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0"/></td>
-									<td><label for="tab2-to-level"><?= $l['to-level'] ?></label></td>
-									<td><input id="tab2-to-level" type="text" name="tab2-to-level" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0"/></td>
-									<td><label for="max-planet-temp"><?= $l['max-planet-temp'] ?></label></td>
-									<td><input id="max-planet-temp" type="text" name="max-planet-temp" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" alt="<?= $l['max-planet-temp'] ?>"/></td>
-									<td><label for="planet-pos"><?= $l['planet-pos'] ?></label></td>
-									<td><input id="planet-pos" type="text" name="planet-pos" class="ui-state-default ui-corner-all ui-input level-input ui-input-margin" value="0" alt="<?= $l['planet-pos'] ?>"/></td>
-									<td width="10px;">&nbsp;</td>
-									<td><label for="booster"><?= $l['booster'] ?></label></td>
-									<td align="center" >
-										<select id="booster" name="booster" class="ui-state-default ui-corner-all ui-input input-in-table">
-											<option value="0" selected="selected">0%</option>
-											<option value="1">10%</option>
-											<option value="2">20%</option>
-											<option value="3">30%</option>
-											<option value="4">40%</option>
-										</select>
-									</td>
-									<td width="10px;">&nbsp;</td>
-									<td><input id="geologist" type="checkbox" name="geologist" class="ui-state-default ui-corner-all ui-input ui-input-margin"/><label for="geologist"><?= $l['geologist'] ?></label></td>
-									<td width="10px;">&nbsp;</td>
-									<td><input id="commander" type="checkbox" name="commander" class="ui-state-default ui-corner-all ui-input ui-input-margin"/><label for="commander"><?= $l['commander'] ?></label></td>
-								</tr>
-							</table>
+									</select>
+									<label for="tab2-from-level"><?= $l['from-level'] ?></label>
+									<input id="tab2-from-level" type="text" name="tab2-from-level" class="form-control form-control-sm level-input" value="0"/>
+									<label for="tab2-to-level"><?= $l['to-level'] ?></label>
+									<input id="tab2-to-level" type="text" name="tab2-to-level" class="form-control form-control-sm level-input" value="0"/>
+									<label for="booster"><?= $l['booster'] ?></label>
+									<select id="booster" name="booster" class="form-select form-select-sm w-auto">
+										<option value="0" selected="selected">0%</option>
+										<option value="1">10%</option>
+										<option value="2">20%</option>
+										<option value="3">30%</option>
+										<option value="4">40%</option>
+									</select>
+								</div>
+								<div class="d-flex align-items-center flex-wrap gap-2">
+									<label for="energy-tech-level"><?= $l['energy-tech-level'] ?></label>
+									<input id="energy-tech-level" type="text" name="energy-tech-level" class="form-control form-control-sm level-input" value="0"/>
+									<label for="plasma-tech-level"><?= $l['plasma-tech-level'] ?></label>
+									<input id="plasma-tech-level" type="text" name="plasma-tech-level" class="form-control form-control-sm level-input" value="0"/>
+									<label for="max-planet-temp"><?= $l['max-planet-temp'] ?></label>
+									<input id="max-planet-temp" type="text" name="max-planet-temp" class="form-control form-control-sm level-input" value="0" alt="<?= $l['max-planet-temp'] ?>"/>
+									<label for="planet-pos"><?= $l['planet-pos'] ?></label>
+									<input id="planet-pos" type="text" name="planet-pos" class="form-control form-control-sm level-input" value="0" alt="<?= $l['planet-pos'] ?>"/>
+								</div>
+								<div class="d-flex align-items-center flex-wrap gap-3">
+									<div class="d-flex align-items-center gap-1"><input id="engineer" type="checkbox" name="engineer" class="form-check-input"/><label for="engineer"><?= $l['engineer'] ?></label></div>
+									<div class="d-flex align-items-center gap-1"><input id="admiral" type="checkbox" name="admiral" class="form-check-input"/><label for="admiral"><?= $l['admiral'] ?></label></div>
+									<div class="d-flex align-items-center gap-1"><input id="geologist" type="checkbox" name="geologist" class="form-check-input"/><label for="geologist"><?= $l['geologist'] ?></label></div>
+									<div class="d-flex align-items-center gap-1"><input id="commander" type="checkbox" name="commander" class="form-check-input"/><label for="commander"><?= $l['commander'] ?></label></div>
+								</div>
+							</div>
 						</div>
 						<div id="prods-table-div">
 							<table id="prods-table" class="lined" cellpadding="0" cellspacing="1" border="0" width="100%">
@@ -477,74 +447,104 @@
 						unset($techTypes[6]);
 					?>
 				<?php endfor; ?>
-			</div>
-		</div>
+			</div> <!-- End main tab-content -->
 	</div>
-	<div id="warning" class="ui-state-highlight ui-corner-all">
+	<div id="warning">
 		<div id="warning-message"></div>
 	</div>
-	<div id="hint" class="ui-corner-all">
-		<table >
+	<div id="hint">
+		<table>
 			<tr>
 				<td valign="top">
-					<span class="ui-icon ui-icon-info"></span>
+					<i class="bi bi-info-circle"></i>
 				</td>
 				<td>
-					<span id= "hint-message"><?= $l['times-note'] ?></span>
+					<span id="hint-message"><?= $l['times-note'] ?></span>
 				</td>
 			</tr>
 		</table>
 	</div>
 </div>
 
-</td>
-</tr></table>
+		</div> <!-- End col-md-10 -->
+	</div> <!-- End row -->
+</div> <!-- End container-fluid -->
 <?php
 	require_once('../../analitics.tpl');
 ?>
 
 <script type="text/javascript">
-// Initialize jQuery UI widgets
-$(function() {
-	// Initialize IRN dialog
-	$("#irn-calc").dialog({
-		autoOpen: false,
-		height: 450,
-		width: 400,
-		modal: true,
-		buttons: [
-			{
-				text: options.doneTitle,
-				click: function() {
-					$(this).dialog("option", "execute", true);
-					$(this).dialog("close");
-				}
-			},
-			{
-				text: options.cancelTitle,
-				click: function() {
-					$(this).dialog("option", "execute", false);
-					$(this).dialog("close");
-				}
-			}
-		]
-	});
-
-	// Initialize tabs
-	$("#tabs").tabs();
-
-	// Initialize inner tabs for tab-0 and tab-1
-	$("#tabs-0").tabs();
-	$("#tabs-1").tabs();
-
-	// Initialize buttons with jQuery UI button widget
-	$("#reset").button();
-	$("#open-llc-dialog").button();
+// Initialize the calculator app
+document.addEventListener('DOMContentLoaded', function() {
+	// Bootstrap tabs are auto-initialized from markup
+	// Bootstrap modals are auto-initialized from markup
 
 	// Initialize the calculator app
 	initializeCostsCalculator();
 });
 </script>
+
+<!-- IRN Calculator Modal -->
+<div class="modal fade" id="irn-calc" tabindex="-1" aria-labelledby="irn-calc-label" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="irn-calc-label"><?= $l['llc-dialog-title'] ?></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-sm mb-2">
+					<tr>
+						<td><label for="irn-level"><?= $l['irn-level'] ?></label></td>
+						<td><input id="irn-level" type="text" name="irn-level" class="form-control form-control-sm level-input" value="0" /></td>
+						<td><label for="planetsSpin"><?= $l['planets-count'] ?></label></td>
+						<td>
+							<div class="input-group input-group-sm" style="width: 100px;">
+								<input id="planetsSpin" type="text" class="form-control" value="8" />
+								<button class="btn btn-outline-secondary" type="button" id="planetsSpin-up">
+									<i class="bi bi-caret-up-fill"></i>
+								</button>
+								<button class="btn btn-outline-secondary" type="button" id="planetsSpin-down">
+									<i class="bi bi-caret-down-fill"></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div class="irn-calc-info">
+					<?= $l['llc-dialog-info'] ?>
+				</div>
+				<div id="lab-levels-div">
+					<table id="lab-levels-table" class="lined">
+						<thead>
+							<tr>
+								<th><?= $l['planet'] ?></th>
+								<th><?= $l['level'] ?></th>
+								<th><?= $l['start'] ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php for ($i = 1; $i <= 8; $i++): ?>
+							<tr class="<?= ($i % 2) === 1 ? 'odd' : 'even' ?>">
+								<td align="center"><?= $l['planet-num'] ?><?=$i?></td>
+								<td align="center"><input type="text" id="lablevel_<?=$i?>" name="lablevel_<?=$i?>" class="form-control form-control-sm input-3columns input-in-table" value="0" /></td>
+								<td align="center"><input type="radio" id="labchoice_<?=$i?>" name="start-pln" disabled/></td>
+							</tr>
+							<?php endfor; ?>
+						</tbody>
+					</table>
+				</div>
+				<div class="irn-calc-info mt-2">
+					<span><?= $l['resulting-lab-level'] ?></span>&nbsp;<span id="resulting-level"><b>?</b></span>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="irn-done-btn"><?= $l['done'] ?></button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= $l['cancel'] ?></button>
+			</div>
+		</div>
+	</div>
+</div>
 
 </body>
 </html>

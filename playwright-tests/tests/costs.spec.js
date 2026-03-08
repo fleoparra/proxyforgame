@@ -33,8 +33,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('[all items - one level / planet] calculations are correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - one level' }).click();
-        await page.getByRole('link', { name: 'Buildings (planet)' }).click();
+        await page.getByRole('tab', { name: 'All items - one level' }).click();
+        await page.getByRole('tab', { name: 'Buildings (planet)' }).click();
         await fillTableRows(page, '#table-0-2', 2, 17, 1);
         await expect(page.locator('#table-0-2 tr:nth-child(18) td:nth-child(4)')).toContainText('1.045M');
         await expect(page.locator('#table-0-2 tr:nth-child(18) td:nth-child(5)')).toContainText('612.724');
@@ -46,8 +46,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('[all items - one level / moon] calculations are correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - one level' }).click();
-        await page.getByRole('link', { name: 'Buildings (moon)' }).click();
+        await page.getByRole('tab', { name: 'All items - one level' }).click();
+        await page.getByRole('tab', { name: 'Buildings (moon)' }).click();
         await fillTableRows(page, '#table-0-3', 2, 9, 1);
         await expect(page.locator('#table-0-3 tr:nth-child(10) td:nth-child(4)')).toContainText('2.043M');
         await expect(page.locator('#table-0-3 tr:nth-child(10) td:nth-child(5)')).toContainText('4.081M');
@@ -67,8 +67,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('[all items - one level / researches] calculations are correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - one level' }).click();
-        await page.getByRole('link', { name: 'Researches' }).click();
+        await page.getByRole('tab', { name: 'All items - one level' }).click();
+        await page.getByRole('tab', { name: 'Researches' }).click();
         await page.locator('#research-lab-level').fill('12');
         await page.locator('#research-lab-level').press('Enter');
         await fillTableRows(page, '#table-0-4', 2, 17, 1);
@@ -98,8 +98,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('[all items - one level / fleet] calculations are correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - one level' }).click();
-        await page.getByRole('link', { name: 'Fleet' }).click();
+        await page.getByRole('tab', { name: 'All items - one level' }).click();
+        await page.getByRole('tab', { name: 'Fleet' }).click();
         await fillTableRows(page, '#table-0-5', 2, 18, 10);
         await expect(page.locator('#table-0-5 tr:nth-child(19) td:nth-child(4)')).toContainText('53.370M');
         await expect(page.locator('#table-0-5 tr:nth-child(19) td:nth-child(5)')).toContainText('42.51M');
@@ -116,8 +116,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('[all items - one level / defenses] calculations are correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - one level' }).click();
-        await page.getByRole('link', { name: 'Defenses' }).click();
+        await page.getByRole('tab', { name: 'All items - one level' }).click();
+        await page.getByRole('tab', { name: 'Defenses' }).click();
         await fillTableRows(page, '#table-0-6', 2, 11, 100);
         await expect(page.locator('#table-0-6 tr:nth-child(12) td:nth-child(4)')).toContainText('16.5M');
         await expect(page.locator('#table-0-6 tr:nth-child(12) td:nth-child(5)')).toContainText('13.3M');
@@ -134,8 +134,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('[all items - multiple levels / planet] calculations are correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - multiple levels' }).click();
-        await page.getByRole('link', { name: 'Buildings (planet)' }).click();
+        await page.getByRole('tab', { name: 'All items - multiple levels' }).click();
+        await page.getByRole('tab', { name: 'Buildings (planet)' }).click();
         await fillTableRows(page, '#table-1-2', 2, 17, 5, 6);
         await expect(page.locator('#table-1-2 tr:nth-child(18) td:nth-child(3)')).toContainText('96');
         await expect(page.locator('#table-1-2 tr:nth-child(18) td:nth-child(4)')).toContainText('34.053M');
@@ -147,8 +147,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('[all items - multiple levels / moon] calculations are correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - multiple levels' }).click();
-        await page.getByRole('link', { name: 'Buildings (moon)' }).click();
+        await page.getByRole('tab', { name: 'All items - multiple levels' }).click();
+        await page.getByRole('tab', { name: 'Buildings (moon)' }).click();
         await fillTableRows(page, '#table-1-3', 2, 9, 5, 6);
         await expect(page.locator('#table-1-3 tr:nth-child(10) td:nth-child(4)')).toContainText('65.401M');
         await expect(page.locator('#table-1-3 tr:nth-child(10) td:nth-child(5)')).toContainText('130.618M');
@@ -157,8 +157,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('[all items - multiple levels / researches] calculations are correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - multiple levels' }).click();
-        await page.getByRole('link', { name: 'Researches' }).click();
+        await page.getByRole('tab', { name: 'All items - multiple levels' }).click();
+        await page.getByRole('tab', { name: 'Researches' }).click();
         await page.locator('#research-lab-level').fill('12');
         await page.locator('#research-lab-level').press('Enter');
         await fillTableRows(page, '#table-1-4', 2, 17, 5, 6);
@@ -171,7 +171,7 @@ test.describe('Costs Calculator Page', () => {
 
     test('[one item - multiple levels] calculations are correct', async ({ page }) => {
         await page.locator('#reset').click();
-        await page.getByRole('link', { name: 'One item - multiple levels' }).click();
+        await page.getByRole('tab', { name: 'One item - multiple levels' }).click();
         // When the page loads, Metal Mine is selected by default
         await page.locator('#tab2-from-level').fill('14');
         await page.locator('#tab2-to-level').fill('16');
@@ -220,7 +220,7 @@ test.describe('Costs Calculator Page', () => {
         // Fill 10 in the first row of each inner tab and verify grand totals
 
         // Buildings (planet)
-        await page.getByRole('link', { name: 'Buildings (planet)' }).click();
+        await page.getByRole('tab', { name: 'Buildings (planet)' }).click();
         await page.locator('#table-0-2 tr:nth-child(2) td:nth-child(3) input').fill('10');
         await page.locator('#table-0-2 tr:nth-child(2) td:nth-child(3) input').press('Enter');
         await expect(page.locator('#table-0-2 tr:nth-last-child(2) td:nth-child(3)')).toContainText('2.306');
@@ -231,7 +231,7 @@ test.describe('Costs Calculator Page', () => {
         await expect(page.locator('#table-0-2 tr:nth-last-child(2) td:nth-child(8)')).toContainText('2');
 
         // Buildings (moon)
-        await page.getByRole('link', { name: 'Buildings (moon)' }).click();
+        await page.getByRole('tab', { name: 'Buildings (moon)' }).click();
         await page.locator('#table-0-3 tr:nth-child(2) td:nth-child(3) input').fill('10');
         await page.locator('#table-0-3 tr:nth-child(2) td:nth-child(3) input').press('Enter');
         await expect(page.locator('#table-0-3 tr:nth-last-child(2) td:nth-child(3)')).toContainText('207.106');
@@ -242,7 +242,7 @@ test.describe('Costs Calculator Page', () => {
         await expect(page.locator('#table-0-3 tr:nth-last-child(2) td:nth-child(8)')).toContainText('370');
 
         // Researches
-        await page.getByRole('link', { name: 'Researches' }).click();
+        await page.getByRole('tab', { name: 'Researches' }).click();
         await page.locator('#table-0-4 tr:nth-child(2) td:nth-child(3) input').fill('10');
         await page.locator('#table-0-4 tr:nth-child(2) td:nth-child(3) input').press('Enter');
         await expect(page.locator('#table-0-4 tr:nth-last-child(2) td:nth-child(3)')).toContainText('309.506');
@@ -253,7 +253,7 @@ test.describe('Costs Calculator Page', () => {
         await expect(page.locator('#table-0-4 tr:nth-last-child(2) td:nth-child(8)')).toContainText('1.086');
 
         // Fleet
-        await page.getByRole('link', { name: 'Fleet' }).click();
+        await page.getByRole('tab', { name: 'Fleet' }).click();
         await page.locator('#table-0-5 tr:nth-child(2) td:nth-child(3) input').fill('10');
         await page.locator('#table-0-5 tr:nth-child(2) td:nth-child(3) input').press('Enter');
         await expect(page.locator('#table-0-5 tr:nth-last-child(2) td:nth-child(3)')).toContainText('329.506');
@@ -264,7 +264,7 @@ test.describe('Costs Calculator Page', () => {
         await expect(page.locator('#table-0-5 tr:nth-last-child(2) td:nth-child(8)')).toContainText('1.126');
 
         // Defenses
-        await page.getByRole('link', { name: 'Defenses' }).click();
+        await page.getByRole('tab', { name: 'Defenses' }).click();
         await page.locator('#table-0-6 tr:nth-child(2) td:nth-child(3) input').fill('10');
         await page.locator('#table-0-6 tr:nth-child(2) td:nth-child(3) input').press('Enter');
         await expect(page.locator('#table-0-6 tr:nth-last-child(2) td:nth-child(3)')).toContainText('349.506');
@@ -281,12 +281,12 @@ test.describe('Costs Calculator Page', () => {
         await page.locator('#research-lab-level').press('Enter');
 
         // Click the second outer tab (All items - multiple levels)
-        await page.getByRole('link', { name: 'All items - multiple levels' }).click();
+        await page.getByRole('tab', { name: 'All items - multiple levels' }).click();
 
         // Fill 10 and 11 in the first row of each inner tab and verify grand totals
 
         // Buildings (planet)
-        await page.getByRole('link', { name: 'Buildings (planet)' }).click();
+        await page.getByRole('tab', { name: 'Buildings (planet)' }).click();
         await page.locator('#table-1-2 tr:nth-child(2) td:nth-child(3) input').fill('10');
         await page.locator('#table-1-2 tr:nth-child(2) td:nth-child(4) input').fill('11');
         await page.locator('#table-1-2 tr:nth-child(2) td:nth-child(4) input').press('Enter');
@@ -298,7 +298,7 @@ test.describe('Costs Calculator Page', () => {
         await expect(page.locator('#table-1-2 tr:nth-last-child(2) td:nth-child(8)')).toContainText('4');
 
         // Buildings (moon)
-        await page.getByRole('link', { name: 'Buildings (moon)' }).click();
+        await page.getByRole('tab', { name: 'Buildings (moon)' }).click();
         await page.locator('#table-1-3 tr:nth-child(2) td:nth-child(3) input').fill('10');
         await page.locator('#table-1-3 tr:nth-child(2) td:nth-child(4) input').fill('11');
         await page.locator('#table-1-3 tr:nth-child(2) td:nth-child(4) input').press('Enter');
@@ -310,7 +310,7 @@ test.describe('Costs Calculator Page', () => {
         await expect(page.locator('#table-1-3 tr:nth-last-child(2) td:nth-child(8)')).toContainText('741');
 
         // Researches
-        await page.getByRole('link', { name: 'Researches' }).click();
+        await page.getByRole('tab', { name: 'Researches' }).click();
         await page.locator('#table-1-4 tr:nth-child(2) td:nth-child(3) input').fill('10');
         await page.locator('#table-1-4 tr:nth-child(2) td:nth-child(4) input').fill('11');
         await page.locator('#table-1-4 tr:nth-child(2) td:nth-child(4) input').press('Enter');
@@ -323,8 +323,8 @@ test.describe('Costs Calculator Page', () => {
     });
 
     test('deconstruction calculation is correct', async ({ page }) => {
-        await page.getByRole('link', { name: 'All items - multiple levels' }).click();
-        await page.getByRole('link', { name: 'Buildings (planet)' }).click();
+        await page.getByRole('tab', { name: 'All items - multiple levels' }).click();
+        await page.getByRole('tab', { name: 'Buildings (planet)' }).click();
 
         await page.locator(`#table-1-2 tr:nth-child(2) td:nth-child(3) input`).fill('20');
         await page.locator(`#table-1-2 tr:nth-child(2) td:nth-child(4) input`).fill('19');

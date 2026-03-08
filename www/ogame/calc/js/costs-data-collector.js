@@ -149,7 +149,7 @@ class DataCollector {
    */
   _parseTableRow(row, isMultiLevel, defaultIsMoon) {
     // First cell contains tech ID (hidden)
-    const techIdCell = $(row.children[0]).html();
+    const techIdCell = row.cells[0].innerHTML;
     let techId = parseInt(techIdCell);
 
     if (!techId || techId === 0) {
@@ -257,7 +257,7 @@ class DataCollector {
    * @private
    */
   _getSelectedTechName() {
-    const select = $('#tech-types-select')[0];
+    const select = $('#tech-types-select');
     if (!select) return '';
     return select.options[select.selectedIndex]?.text || '';
   }
@@ -384,11 +384,11 @@ class DataCollector {
    * @private
    */
   _getInputNumber(selector) {
-    const element = $(selector)[0];
+    const element = typeof selector === 'string' ? $(selector) : selector;
     if (!element) return 0;
     return getInputNumber(element) || 0;
   }
-  
+
   /**
    * Get numeric value from input element (not selector)
    * @private
@@ -397,48 +397,48 @@ class DataCollector {
     if (!element) return 0;
     return getInputNumber(element) || 0;
   }
-  
+
   /**
    * Get numeric value from select field
    * @private
    */
   _getSelectNumber(selector) {
-    const element = $(selector)[0];
+    const element = typeof selector === 'string' ? $(selector) : selector;
     if (!element) return 0;
     return parseInt(element.value) || 0;
   }
-  
+
   /**
    * Get boolean value from checkbox
    * @private
    */
   _getCheckbox(selector) {
-    const element = $(selector)[0];
+    const element = typeof selector === 'string' ? $(selector) : selector;
     if (!element) return false;
     return element.checked === true;
   }
-  
+
   /**
    * Get boolean value from radio button
    * @private
    */
   _getRadioChecked(selector) {
-    const element = $(selector)[0];
+    const element = typeof selector === 'string' ? $(selector) : selector;
     if (!element) return false;
     return element.checked === true;
   }
-  
+
   /**
    * Get table rows
    * @private
    */
   _getTableRows(tableId) {
-    const selector = `#${tableId} tr`;
-    return $(selector);
+    const table = typeof tableId === 'string' ? $(`#${tableId}`) : tableId;
+    return table ? Array.from(table.querySelectorAll('tr')) : [];
   }
   
   /**
-   * Cache and retrieve jQuery selector
+   * Cache and retrieve selector
    * @private
    */
   _cached$(selector) {
@@ -447,7 +447,7 @@ class DataCollector {
     }
     return this._selectorCache[selector];
   }
-  
+
   /**
    * Clear selector cache (call when DOM changes)
    */

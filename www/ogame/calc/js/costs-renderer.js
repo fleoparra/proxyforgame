@@ -37,8 +37,8 @@ class Renderer {
       console.error('Requests and results length mismatch');
       return;
     }
-    
-    const rows = $(`#${tableId} tr`);
+
+    const rows = getTableRows(`#${tableId}`);
     const isMultiLevel = tableId.includes('-1-');
     const firstDataCol = isMultiLevel ? 4 : 3;
     
@@ -80,23 +80,23 @@ class Renderer {
    */
   _renderRowCost(row, firstDataCol, result, techId, isMultiLevel, params) {
     // Metal, Crystal, Deuterium
-    $(row.children[firstDataCol]).html(this._formatNumber(result.metal, params));
-    $(row.children[firstDataCol + 1]).html(this._formatNumber(result.crystal, params));
-    $(row.children[firstDataCol + 2]).html(this._formatNumber(result.deuterium, params));
+    row.cells[firstDataCol].innerHTML = this._formatNumber(result.metal, params);
+    row.cells[firstDataCol + 1].innerHTML = this._formatNumber(result.crystal, params);
+    row.cells[firstDataCol + 2].innerHTML = this._formatNumber(result.deuterium, params);
 
     // Energy
-    $(row.children[firstDataCol + 3]).html(this._formatNumber(result.energy, params));
+    row.cells[firstDataCol + 3].innerHTML = this._formatNumber(result.energy, params);
 
     // Time
-    $(row.children[firstDataCol + 4]).html(this._formatTime(result.time));
+    row.cells[firstDataCol + 4].innerHTML = this._formatTime(result.time);
 
     // Points
-    $(row.children[firstDataCol + 5]).html(this._formatNumber(result.points, params));
+    row.cells[firstDataCol + 5].innerHTML = this._formatNumber(result.points, params);
 
     // Dark Matter (only for single-level building/research tabs - not fleet/defense)
     if (!isMultiLevel && techId < 200) {
       const dmCost = getHalvingCost(techId, result.time);
-      $(row.children[firstDataCol + 6]).html(this._formatNumber(dmCost, params));
+      row.cells[firstDataCol + 6].innerHTML = this._formatNumber(dmCost, params);
     }
   }
   
@@ -116,9 +116,9 @@ class Renderer {
         const cellIndex = firstDataCol + col;
         if (col === 4) {
           // Time cell
-          $(rows[i].children[cellIndex]).html('0' + this.datetimeS);
+          rows[i].cells[cellIndex].innerHTML = '0' + this.datetimeS;
         } else {
-          $(rows[i].children[cellIndex]).html('0');
+          rows[i].cells[cellIndex].innerHTML = '0';
         }
       }
 
@@ -135,14 +135,14 @@ class Renderer {
   _findRowByTechId(rows, techId, isMoon) {
     // Moon buildings have +10000 in table
     const searchId = isMoon ? techId + 10000 : techId;
-    
+
     for (let i = 1; i < rows.length - 5; i++) {
-      const rowTechId = parseInt($(rows[i].children[0]).html());
+      const rowTechId = parseInt(rows[i].cells[0].innerHTML);
       if (rowTechId === searchId) {
         return i;
       }
     }
-    
+
     return -1;
   }
   
@@ -166,28 +166,28 @@ class Renderer {
       for (let i = 1; i < rows.length - 5; i++) {
         const row = rows[i];
         const targetColIdx = isMultiLevel ? 3 : 2;
-        const levelInput = $(row.children[targetColIdx]).find('input');
-        if (levelInput.length > 0) {
-          const level = parseFloat(levelInput.val()) || 0;
+        const levelInput = row.cells[targetColIdx].querySelector('input');
+        if (levelInput) {
+          const level = parseFloat(levelInput.value) || 0;
           if (level > 0) {
             totalLevels += level;
           }
         }
       }
-      $(rows[subtotalRow].children[2]).html(`<b>${totalLevels}</b>`);
+      rows[subtotalRow].cells[2].innerHTML = `<b>${totalLevels}</b>`;
     } else {
       // For non-building tables, leave column 2 empty
-      $(rows[subtotalRow].children[2]).html('');
+      rows[subtotalRow].cells[2].innerHTML = '';
     }
 
     // Subtotals row - data columns start at column 3
     const subtotalStartCol = 3;
-    $(rows[subtotalRow].children[subtotalStartCol]).html(`<b>${this._formatNumber(totals.metal, params)}</b>`);
-    $(rows[subtotalRow].children[subtotalStartCol + 1]).html(`<b>${this._formatNumber(totals.crystal, params)}</b>`);
-    $(rows[subtotalRow].children[subtotalStartCol + 2]).html(`<b>${this._formatNumber(totals.deuterium, params)}</b>`);
-    $(rows[subtotalRow].children[subtotalStartCol + 3]).html(`<b>${this._formatNumber(totals.energy, params)}</b>`);
-    $(rows[subtotalRow].children[subtotalStartCol + 4]).html(`<b>${this._formatTime(totals.time)}</b>`);
-    $(rows[subtotalRow].children[subtotalStartCol + 5]).html(`<b>${this._formatNumber(totals.points, params)}</b>`);
+    rows[subtotalRow].cells[subtotalStartCol].innerHTML = `<b>${this._formatNumber(totals.metal, params)}</b>`;
+    rows[subtotalRow].cells[subtotalStartCol + 1].innerHTML = `<b>${this._formatNumber(totals.crystal, params)}</b>`;
+    rows[subtotalRow].cells[subtotalStartCol + 2].innerHTML = `<b>${this._formatNumber(totals.deuterium, params)}</b>`;
+    rows[subtotalRow].cells[subtotalStartCol + 3].innerHTML = `<b>${this._formatNumber(totals.energy, params)}</b>`;
+    rows[subtotalRow].cells[subtotalStartCol + 4].innerHTML = `<b>${this._formatTime(totals.time)}</b>`;
+    rows[subtotalRow].cells[subtotalStartCol + 5].innerHTML = `<b>${this._formatNumber(totals.points, params)}</b>`;
 
     // DM column (column 9 for single-level tables)
     // For fleet and defense tables, calculate DM cost to halve the total time
@@ -195,21 +195,19 @@ class Renderer {
       if (isFleetOrDefenseTable) {
         // Fleet and defense use techId 1000 for DM halving cost calculation
         const dmCost = getHalvingCost(1000, totals.time);
-        $(rows[subtotalRow].children[subtotalStartCol + 6]).html(`<b>${this._formatNumber(dmCost, params)}</b>`);
+        rows[subtotalRow].cells[subtotalStartCol + 6].innerHTML = `<b>${this._formatNumber(dmCost, params)}</b>`;
       } else {
         // For buildings/research, DM column shows individual row costs only
-        $(rows[subtotalRow].children[subtotalStartCol + 6]).html('');
+        rows[subtotalRow].cells[subtotalStartCol + 6].innerHTML = '';
       }
     }
 
     // Transport calculations for subtotal
     const transport = this._calculateTransport(totals.totalResources, params);
-    $(rows[transportRow].children[2]).html(
-      `${transport.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`
-    );
-    $(rows[transportRow].children[3]).html(
-      `${transport.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`
-    );
+    rows[transportRow].cells[2].innerHTML =
+      `${transport.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`;
+    rows[transportRow].cells[3].innerHTML =
+      `${transport.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`;
   }
   
   /**
@@ -223,7 +221,7 @@ class Renderer {
     const tableIds = this._getTableIdsForTab(outerTab);
 
     tableIds.forEach(tableId => {
-      const rows = $(`#${tableId} tr`);
+      const rows = getTableRows(`#${tableId}`);
       const grandTotalRow = rows.length - 2;
       const grandTransportRow = rows.length - 1;
       // In grand totals row, we use DOM child indices (not visual columns)
@@ -232,32 +230,30 @@ class Renderer {
       const startCol = 2;
 
       // Update grand total row in each table
-      $(rows[grandTotalRow].children[startCol]).html(`<b>${this._formatNumber(grandTotal.metal, params)}</b>`);
-      $(rows[grandTotalRow].children[startCol + 1]).html(`<b>${this._formatNumber(grandTotal.crystal, params)}</b>`);
-      $(rows[grandTotalRow].children[startCol + 2]).html(`<b>${this._formatNumber(grandTotal.deuterium, params)}</b>`);
-      $(rows[grandTotalRow].children[startCol + 3]).html(`<b>${this._formatNumber(grandTotal.energy, params)}</b>`);
-      $(rows[grandTotalRow].children[startCol + 4]).html(`<b>${this._formatTime(grandTotal.time)}</b>`);
-      $(rows[grandTotalRow].children[startCol + 5]).html(`<b>${this._formatNumber(grandTotal.points, params)}</b>`);
+      rows[grandTotalRow].cells[startCol].innerHTML = `<b>${this._formatNumber(grandTotal.metal, params)}</b>`;
+      rows[grandTotalRow].cells[startCol + 1].innerHTML = `<b>${this._formatNumber(grandTotal.crystal, params)}</b>`;
+      rows[grandTotalRow].cells[startCol + 2].innerHTML = `<b>${this._formatNumber(grandTotal.deuterium, params)}</b>`;
+      rows[grandTotalRow].cells[startCol + 3].innerHTML = `<b>${this._formatNumber(grandTotal.energy, params)}</b>`;
+      rows[grandTotalRow].cells[startCol + 4].innerHTML = `<b>${this._formatTime(grandTotal.time)}</b>`;
+      rows[grandTotalRow].cells[startCol + 5].innerHTML = `<b>${this._formatNumber(grandTotal.points, params)}</b>`;
 
       // DM column: Calculate for fleet/defense tables, leave empty for others
       if (!isMultiLevel) {
         // Fleet and defense tables are table-0-5 and table-0-6
         if (tableId === 'table-0-5' || tableId === 'table-0-6') {
           const dmCost = getHalvingCost(1000, grandTotal.time);
-          $(rows[grandTotalRow].children[startCol + 6]).html(`<b>${this._formatNumber(dmCost, params)}</b>`);
+          rows[grandTotalRow].cells[startCol + 6].innerHTML = `<b>${this._formatNumber(dmCost, params)}</b>`;
         } else {
-          $(rows[grandTotalRow].children[startCol + 6]).html('');
+          rows[grandTotalRow].cells[startCol + 6].innerHTML = '';
         }
       }
 
       // Update grand transport row
       const transport = this._calculateTransport(grandTotal.totalResources, params);
-      $(rows[grandTransportRow].children[2]).html(
-        `${transport.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`
-      );
-      $(rows[grandTransportRow].children[3]).html(
-        `${transport.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`
-      );
+      rows[grandTransportRow].cells[2].innerHTML =
+        `${transport.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`;
+      rows[grandTransportRow].cells[3].innerHTML =
+        `${transport.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`;
     });
   }
   
@@ -288,18 +284,18 @@ class Renderer {
    */
   renderRangeTable(rangeData, results, productions, consumptions, params) {
     const { techId, fromLevel, toLevel } = rangeData;
-    
+
     // Determine which table to use
     const isProducer = [1, 2, 3, 4, 12, 212].includes(techId);
     const tableId = isProducer ? 'prods-table' : 'commons-table';
-    
+
     // Show/hide appropriate table
     if (isProducer) {
-      $('#prods-table-div').show();
-      $('#commons-table-div').hide();
+      show('#prods-table-div');
+      hide('#commons-table-div');
     } else {
-      $('#prods-table-div').hide();
-      $('#commons-table-div').show();
+      hide('#prods-table-div');
+      show('#commons-table-div');
     }
     
     // Clear and rebuild table
@@ -339,13 +335,12 @@ class Renderer {
    * @private
    */
   _clearRangeTable(tableId) {
-    const table = $(`#${tableId}`)[0];
-    const rows = $(`#${tableId} tr`);
+    const rows = getTableRows(`#${tableId}`);
 
     // Remove all data rows (keep header row at index 0 and last 2 footer rows)
     // Any row between header and footer is a data row and should be removed
     for (let i = rows.length - 3; i > 0; i--) {
-      $(rows[i]).remove();
+      rows[i].remove();
     }
   }
   
@@ -377,9 +372,9 @@ class Renderer {
     html += `</tr>`;
 
     // Insert before the totals rows
-    const rows = $(`#${tableId} tr`);
+    const rows = getTableRows(`#${tableId}`);
     const insertBefore = rows[rows.length - 2];
-    $(insertBefore).before(html);
+    insertBefore.insertAdjacentHTML('beforebegin', html);
   }
   
   /**
@@ -387,31 +382,29 @@ class Renderer {
    * @private
    */
   _renderRangeTotals(tableId, totals, maxProduction, maxConsumption, params, isProducer) {
-    const rows = $(`#${tableId} tr`);
+    const rows = getTableRows(`#${tableId}`);
     const totalsRow = rows.length - 2;
     const transportRow = rows.length - 1;
 
     // Totals row
-    $(rows[totalsRow].children[1]).html(`<b>${this._formatNumber(totals.metal, params)}</b>`);
-    $(rows[totalsRow].children[2]).html(`<b>${this._formatNumber(totals.crystal, params)}</b>`);
-    $(rows[totalsRow].children[3]).html(`<b>${this._formatNumber(totals.deuterium, params)}</b>`);
-    $(rows[totalsRow].children[4]).html(`<b>${this._formatNumber(totals.energy, params)}</b>`);
-    $(rows[totalsRow].children[5]).html(`<b>${this._formatTime(totals.time)}</b>`);
-    $(rows[totalsRow].children[6]).html(`<b>${this._formatNumber(totals.points, params)}</b>`);
+    rows[totalsRow].cells[1].innerHTML = `<b>${this._formatNumber(totals.metal, params)}</b>`;
+    rows[totalsRow].cells[2].innerHTML = `<b>${this._formatNumber(totals.crystal, params)}</b>`;
+    rows[totalsRow].cells[3].innerHTML = `<b>${this._formatNumber(totals.deuterium, params)}</b>`;
+    rows[totalsRow].cells[4].innerHTML = `<b>${this._formatNumber(totals.energy, params)}</b>`;
+    rows[totalsRow].cells[5].innerHTML = `<b>${this._formatTime(totals.time)}</b>`;
+    rows[totalsRow].cells[6].innerHTML = `<b>${this._formatNumber(totals.points, params)}</b>`;
 
     if (isProducer) {
-      $(rows[totalsRow].children[7]).html(`<b>${this._formatNumber(maxProduction, params)}</b>`);
-      $(rows[totalsRow].children[8]).html(`<b>${this._formatNumber(maxConsumption, params)}</b>`);
+      rows[totalsRow].cells[7].innerHTML = `<b>${this._formatNumber(maxProduction, params)}</b>`;
+      rows[totalsRow].cells[8].innerHTML = `<b>${this._formatNumber(maxConsumption, params)}</b>`;
     }
 
     // Transport row
     const transport = this._calculateTransport(totals.totalResources, params);
-    $(rows[transportRow].children[1]).html(
-      `${transport.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`
-    );
-    $(rows[transportRow].children[2]).html(
-      `${transport.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`
-    );
+    rows[transportRow].cells[1].innerHTML =
+      `${transport.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`;
+    rows[transportRow].cells[2].innerHTML =
+      `${transport.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`;
   }
   
   // ==========================================================================
@@ -426,13 +419,13 @@ class Renderer {
     if (!options.warnindDivId || !options.msgCantResearch) {
       return; // No error display configured
     }
-    
+
     const message = options.msgCantResearch.replace('{0}', researchName);
-    
-    $(`#${options.warnindMsgDivId}`).text(message);
-    $(`#${options.warnindDivId}`).fadeIn(800, function() {
+
+    setTextContent(`#${options.warnindMsgDivId}`, message);
+    fadeIn(`#${options.warnindDivId}`, 800, function() {
       setTimeout(function() {
-        $(`#${options.warnindDivId}`).fadeOut(800);
+        fadeOut(`#${options.warnindDivId}`, 800);
       }, 5000);
     });
   }

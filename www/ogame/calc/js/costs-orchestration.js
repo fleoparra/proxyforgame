@@ -282,8 +282,8 @@ class CostsCalculator {
     ];
 
     buildingInputs.forEach(selector => {
-      $(selector).unbind('keyup');
-      $(selector).keyup((event) => {
+      removeAllEvents(selector, 'keyup');
+      addEvent(selector, 'keyup', (event) => {
         // Validate input first (if function exists from utils.js)
         if (typeof validateInputNumber === 'function') {
           validateInputNumber.call(event.target, event);
@@ -304,8 +304,8 @@ class CostsCalculator {
     ];
 
     techInputs.forEach(selector => {
-      $(selector).unbind('keyup');
-      $(selector).keyup((event) => {
+      removeAllEvents(selector, 'keyup');
+      addEvent(selector, 'keyup', (event) => {
         // Validate input first (if function exists from utils.js)
         if (typeof validateInputNumber === 'function') {
           validateInputNumber.call(event.target, event);
@@ -315,9 +315,11 @@ class CostsCalculator {
     });
 
     // Selects
-    $('#universe-speed, #research-speed, #booster').unbind('change');
-    $('#universe-speed, #research-speed, #booster').change(() => {
-      this._handleParamChange('speed');
+    ['#universe-speed', '#research-speed', '#booster'].forEach(selector => {
+      removeAllEvents(selector, 'change');
+      addEvent(selector, 'change', () => {
+        this._handleParamChange('speed');
+      });
     });
 
     // Checkboxes
@@ -333,14 +335,16 @@ class CostsCalculator {
 
     // Unbind old click handlers from costs.js to prevent conflicts
     checkboxes.forEach(selector => {
-      $(selector).unbind('click');
+      removeAllEvents(selector, 'click');
       // Bind new handler
-      $(selector).click(() => this._handleParamChange(selector.substring(1)));
+      addEvent(selector, 'click', () => this._handleParamChange(selector.substring(1)));
     });
 
     // Radio buttons (class)
-    $('input[name="class"]').unbind('click');
-    $('input[name="class"]').click(() => this._handleParamChange('class'));
+    $$('input[name="class"]').forEach(input => {
+      removeAllEvents(input, 'click');
+      addEvent(input, 'click', () => this._handleParamChange('class'));
+    });
   }
 
   /**
@@ -349,16 +353,18 @@ class CostsCalculator {
    */
   _bindTableEvents() {
     // Clear any existing keyup handlers
-    $('#tab-0 input:text').unbind('keyup');
-    $('#tab-1 input:text').unbind('keyup');
+    $$('#tab-0 input[type="text"]').forEach(el => removeAllEvents(el, 'keyup'));
+    $$('#tab-1 input[type="text"]').forEach(el => removeAllEvents(el, 'keyup'));
 
     // Single-level and multi-level tab inputs - new handlers with validation
-    $('#tab-0 input:text, #tab-1 input:text').bind('keyup', (event) => {
-      // Validate input first (if function exists from utils.js)
-      if (typeof validateInputNumber === 'function') {
-        validateInputNumber.call(event.target, event);
-      }
-      this._handleTableInputChange(event);
+    $$('#tab-0 input[type="text"], #tab-1 input[type="text"]').forEach(el => {
+      addEvent(el, 'keyup', (event) => {
+        // Validate input first (if function exists from utils.js)
+        if (typeof validateInputNumber === 'function') {
+          validateInputNumber.call(event.target, event);
+        }
+        this._handleTableInputChange(event);
+      });
     });
   }
 
@@ -368,31 +374,33 @@ class CostsCalculator {
    */
   _bindRangeTabEvents() {
     // Unbind old handlers first
-    $('#tech-types-select').unbind('change').unbind('keyup');
-    $('#tab2-from-level, #tab2-to-level').unbind('keyup').unbind('blur');
-    // Also unbind old handler namespaced events
-    $('#tech-types-select').unbind('keyup.updateOneMultTab');
-    $('#tab2-from-level, #tab2-to-level').unbind('keyup.updateOneMultTab');
-    $('#tab2-from-level, #tab2-to-level').unbind('blur.updateOneMultTab');
+    removeAllEvents('#tech-types-select', 'change');
+    removeAllEvents('#tech-types-select', 'keyup');
+    removeAllEvents('#tab2-from-level', 'keyup');
+    removeAllEvents('#tab2-to-level', 'keyup');
+    removeAllEvents('#tab2-from-level', 'blur');
+    removeAllEvents('#tab2-to-level', 'blur');
 
-    $('#tech-types-select').change(() => {
+    addEvent('#tech-types-select', 'change', () => {
       this.recalculateRangeTab();
     });
 
-    $('#tab2-from-level, #tab2-to-level').keyup((event) => {
-      // Validate input first (if function exists from utils.js)
-      if (typeof validateInputNumber === 'function') {
-        validateInputNumber.call(event.target, event);
-      }
-      this.recalculateRangeTab();
-    });
+    ['#tab2-from-level', '#tab2-to-level'].forEach(selector => {
+      addEvent(selector, 'keyup', (event) => {
+        // Validate input first (if function exists from utils.js)
+        if (typeof validateInputNumber === 'function') {
+          validateInputNumber.call(event.target, event);
+        }
+        this.recalculateRangeTab();
+      });
 
-    $('#tab2-from-level, #tab2-to-level').blur((event) => {
-      // Validate on blur (if function exists from utils.js)
-      if (typeof validateInputNumberOnBlur === 'function') {
-        validateInputNumberOnBlur.call(event.target, event);
-      }
-      this.recalculateRangeTab();
+      addEvent(selector, 'blur', (event) => {
+        // Validate on blur (if function exists from utils.js)
+        if (typeof validateInputNumberOnBlur === 'function') {
+          validateInputNumberOnBlur.call(event.target, event);
+        }
+        this.recalculateRangeTab();
+      });
     });
   }
 
@@ -402,14 +410,14 @@ class CostsCalculator {
    */
   _bindSpecialEvents() {
     // Unbind old handlers first
-    $('#reset').unbind('click');
-    $('#open-llc-dialog').unbind('click');
+    removeAllEvents('#reset', 'click');
+    removeAllEvents('#open-llc-dialog', 'click');
 
     // Reset button
-    $('#reset').click(() => this.reset());
+    addEvent('#reset', 'click', () => this.reset());
 
     // IRN calculator dialog
-    $('#open-llc-dialog').click(() => {
+    addEvent('#open-llc-dialog', 'click', () => {
       this._openIRNDialog();
     });
   }
@@ -607,87 +615,97 @@ class CostsCalculator {
   _applyStateToUI(state) {
     // Building levels
     if (state.shipyardLevel !== undefined) {
-      $('#shipyard-level').val(state.shipyardLevel);
+      setVal('#shipyard-level', state.shipyardLevel);
     }
     if (state.robotFactoryLevelPlanet !== undefined) {
-      $('#robot-factory-level').val(state.robotFactoryLevelPlanet);
+      setVal('#robot-factory-level', state.robotFactoryLevelPlanet);
     }
     if (state.robotFactoryLevelMoon !== undefined) {
-      $('#robot-factory-level-moon').val(state.robotFactoryLevelMoon);
+      setVal('#robot-factory-level-moon', state.robotFactoryLevelMoon);
     }
     if (state.naniteFactoryLevel !== undefined) {
-      $('#nanite-factory-level').val(state.naniteFactoryLevel);
+      setVal('#nanite-factory-level', state.naniteFactoryLevel);
     }
 
     // Speeds
     if (state.universeSpeed !== undefined) {
-      $('#universe-speed').val(state.universeSpeed);
+      setVal('#universe-speed', state.universeSpeed);
     }
     if (state.researchSpeed !== undefined) {
-      $('#research-speed').val(state.researchSpeed);
+      setVal('#research-speed', state.researchSpeed);
     }
 
     // Technologies
     if (state.researchLabLevel !== undefined) {
-      $('#research-lab-level').val(state.researchLabLevel);
+      setVal('#research-lab-level', state.researchLabLevel);
     }
     if (state.ionTechLevel !== undefined) {
-      $('#ion-tech-level').val(state.ionTechLevel);
+      setVal('#ion-tech-level', state.ionTechLevel);
     }
     if (state.hyperTechLevel !== undefined) {
-      $('#hyper-tech-level').val(state.hyperTechLevel);
+      setVal('#hyper-tech-level', state.hyperTechLevel);
     }
     if (state.energyTechLevel !== undefined) {
-      $('#energy-tech-level').val(state.energyTechLevel);
+      setVal('#energy-tech-level', state.energyTechLevel);
     }
     if (state.plasmaTechLevel !== undefined) {
-      $('#plasma-tech-level').val(state.plasmaTechLevel);
+      setVal('#plasma-tech-level', state.plasmaTechLevel);
     }
     if (state.maxPlanetTemp !== undefined) {
-      $('#max-planet-temp').val(state.maxPlanetTemp);
+      setVal('#max-planet-temp', state.maxPlanetTemp);
     }
     if (state.planetPos !== undefined) {
-      $('#planet-pos').val(state.planetPos);
+      setVal('#planet-pos', state.planetPos);
     }
 
     // Officers/bonuses
-    if (state.geologist === true) { $('#geologist').attr('checked', 'checked'); } else { $('#geologist').removeAttr('checked'); }
-    if (state.engineer === true) { $('#engineer').attr('checked', 'checked'); } else { $('#engineer').removeAttr('checked'); }
-    if (state.technocrat === true) { $('#technocrat').attr('checked', 'checked'); } else { $('#technocrat').removeAttr('checked'); }
-    if (state.admiral === true) { $('#admiral').attr('checked', 'checked'); } else { $('#admiral').removeAttr('checked'); }
-    if (state.commander === true) { $('#commander').attr('checked', 'checked'); } else { $('#commander').removeAttr('checked'); }
-    if (state.researchBonus === true) { $('#research-bonus').attr('checked', 'checked'); } else { $('#research-bonus').removeAttr('checked'); }
-    if (state.fullNumbers === true) { $('#full-numbers').attr('checked', 'checked'); } else { $('#full-numbers').removeAttr('checked'); }
+    setChecked('#geologist', state.geologist === true);
+    setChecked('#engineer', state.engineer === true);
+    setChecked('#technocrat', state.technocrat === true);
+    setChecked('#admiral', state.admiral === true);
+    setChecked('#commander', state.commander === true);
+    setChecked('#research-bonus', state.researchBonus === true);
+    setChecked('#full-numbers', state.fullNumbers === true);
 
     // Class
     if (state.playerClass !== undefined) {
-      $(`#class-${state.playerClass}`).attr('checked', 'checked');
+      setChecked(`#class-${state.playerClass}`, true);
     }
 
     // Booster
     if (state.booster !== undefined) {
-      $('#booster').val(state.booster);
+      setVal('#booster', state.booster);
     }
 
     // IRN
     if (state.irnLevel !== undefined) {
-      $('#irn-level').val(state.irnLevel);
+      setVal('#irn-level', state.irnLevel);
     }
     if (state.labLevels && state.labLevels.length > 0) {
       const planetCount = state.labLevels.length;
-      $('#planetsSpin').val(planetCount);
+      setVal('#planetsSpin', planetCount);
+      options.currPlanetsCount = planetCount;
+      options.prm.planetsSpin = planetCount;
+
+      // Trim table rows to match saved planet count
+      const tbody = document.querySelector('#lab-levels-table tbody');
+      if (tbody) {
+        while (tbody.rows.length > planetCount) {
+          tbody.deleteRow(tbody.rows.length - 1);
+        }
+      }
 
       // Set lab levels
       state.labLevels.forEach((level, index) => {
         const planetNum = index + 1;
-        $(`#lablevel_${planetNum}`).val(level);
+        setVal(`#lablevel_${planetNum}`, level);
 
         if (level > 0) {
-          $(`#labchoice_${planetNum}`).removeAttr('disabled');
+          removeAttr(`#labchoice_${planetNum}`, 'disabled');
         }
 
         if (state.labChoice === index) {
-          $(`#labchoice_${planetNum}`).attr('checked', 'checked');
+          setChecked(`#labchoice_${planetNum}`, true);
         }
       });
     }
@@ -717,54 +735,54 @@ class CostsCalculator {
    */
   _resetUI() {
     // Building levels
-    $('#shipyard-level').val(0);
-    $('#robot-factory-level').val(0);
-    $('#robot-factory-level-moon').val(0);
-    $('#nanite-factory-level').val(0);
+    setVal('#shipyard-level', 0);
+    setVal('#robot-factory-level', 0);
+    setVal('#robot-factory-level-moon', 0);
+    setVal('#nanite-factory-level', 0);
 
     // Speeds
-    $('#universe-speed').val(1);
-    $('#research-speed').val(1);
+    setVal('#universe-speed', 1);
+    setVal('#research-speed', 1);
 
     // Technologies
-    $('#research-lab-level').val(0);
-    $('#ion-tech-level').val(0);
-    $('#hyper-tech-level').val(0);
-    $('#energy-tech-level').val(0);
-    $('#plasma-tech-level').val(0);
-    $('#max-planet-temp').val(0);
-    $('#planet-pos').val(8);
+    setVal('#research-lab-level', 0);
+    setVal('#ion-tech-level', 0);
+    setVal('#hyper-tech-level', 0);
+    setVal('#energy-tech-level', 0);
+    setVal('#plasma-tech-level', 0);
+    setVal('#max-planet-temp', 0);
+    setVal('#planet-pos', 8);
 
     // Officers/bonuses
-    $('#geologist').removeAttr('checked');
-    $('#engineer').removeAttr('checked');
-    $('#technocrat').removeAttr('checked');
-    $('#admiral').removeAttr('checked');
-    $('#commander').removeAttr('checked');
-    $('#research-bonus').removeAttr('checked');
-    $('#full-numbers').removeAttr('checked');
+    setChecked('#geologist', false);
+    setChecked('#engineer', false);
+    setChecked('#technocrat', false);
+    setChecked('#admiral', false);
+    setChecked('#commander', false);
+    setChecked('#research-bonus', false);
+    setChecked('#full-numbers', false);
 
     // Class
-    $('#class-0').attr('checked', 'checked');
+    setChecked('#class-0', true);
 
     // Booster
-    $('#booster').val(0);
+    setVal('#booster', 0);
 
     // IRN
-    $('#irn-level').val(0);
-    $('#planetsSpin').val(8);
+    setVal('#irn-level', 0);
+    setVal('#planetsSpin', 8);
     this._resetIRNDialog();
 
     // Clear all table inputs
-    $('#tab-0 input:text, #tab-1 input:text').val(0);
+    $$('#tab-0 input[type="text"], #tab-1 input[type="text"]').forEach(el => el.value = 0);
 
     // Clear all table data cells (including totals)
     this._clearAllTablesData();
 
     // Clear range tab
-    $('#tech-types-select').val(1);
-    $('#tab2-from-level').val(0);
-    $('#tab2-to-level').val(0);
+    setVal('#tech-types-select', 1);
+    setVal('#tab2-from-level', 0);
+    setVal('#tab2-to-level', 0);
   }
 
   /**
@@ -796,7 +814,7 @@ class CostsCalculator {
    * @private
    */
   _clearTableData(tableId, isMultiLevel, datetimeS, scShort, lcShort, scFull, lcFull) {
-    const rows = $(`#${tableId} tr`);
+    const rows = getTableRows(`#${tableId}`);
     if (rows.length === 0) return;
 
     const firstDataCol = isMultiLevel ? 4 : 3;
@@ -805,14 +823,14 @@ class CostsCalculator {
     // Clear data rows (skip header and footer rows)
     for (let i = 1; i < rows.length - 5; i++) {
       // Clear data cells (metal, crystal, deuterium, energy, time, points, DM)
-      $(rows[i].children[firstDataCol]).html('0');
-      $(rows[i].children[firstDataCol + 1]).html('0');
-      $(rows[i].children[firstDataCol + 2]).html('0');
-      $(rows[i].children[firstDataCol + 3]).html('0');
-      $(rows[i].children[firstDataCol + 4]).html('0' + datetimeS);
-      $(rows[i].children[firstDataCol + 5]).html('0');
+      rows[i].cells[firstDataCol].innerHTML = '0';
+      rows[i].cells[firstDataCol + 1].innerHTML = '0';
+      rows[i].cells[firstDataCol + 2].innerHTML = '0';
+      rows[i].cells[firstDataCol + 3].innerHTML = '0';
+      rows[i].cells[firstDataCol + 4].innerHTML = '0' + datetimeS;
+      rows[i].cells[firstDataCol + 5].innerHTML = '0';
       if (!isMultiLevel) {
-        $(rows[i].children[firstDataCol + 6]).html('0');
+        rows[i].cells[firstDataCol + 6].innerHTML = '0';
       }
     }
 
@@ -823,35 +841,38 @@ class CostsCalculator {
     const grandTransportRow = rows.length - 1;
 
     const subtotalStartCol = isBuildingTable ? 3 : (isMultiLevel ? 3 : 2);
-    $(rows[subtotalRow].children[subtotalStartCol]).html('<b>0</b>');
-    $(rows[subtotalRow].children[subtotalStartCol + 1]).html('<b>0</b>');
-    $(rows[subtotalRow].children[subtotalStartCol + 2]).html('<b>0</b>');
-    $(rows[subtotalRow].children[subtotalStartCol + 3]).html('<b>0</b>');
-    $(rows[subtotalRow].children[subtotalStartCol + 4]).html('<b>0' + datetimeS + '</b>');
-    $(rows[subtotalRow].children[subtotalStartCol + 5]).html('<b>0</b>');
+    if (isBuildingTable) {
+      rows[subtotalRow].cells[2].innerHTML = '<b>0</b>';
+    }
+    rows[subtotalRow].cells[subtotalStartCol].innerHTML = '<b>0</b>';
+    rows[subtotalRow].cells[subtotalStartCol + 1].innerHTML = '<b>0</b>';
+    rows[subtotalRow].cells[subtotalStartCol + 2].innerHTML = '<b>0</b>';
+    rows[subtotalRow].cells[subtotalStartCol + 3].innerHTML = '<b>0</b>';
+    rows[subtotalRow].cells[subtotalStartCol + 4].innerHTML = '<b>0' + datetimeS + '</b>';
+    rows[subtotalRow].cells[subtotalStartCol + 5].innerHTML = '<b>0</b>';
     if (!isMultiLevel && tableId.includes('-0-') && (tableId.endsWith('-2') || tableId.endsWith('-3'))) {
-      $(rows[subtotalRow].children[subtotalStartCol + 6]).html('<b>0</b>');
+      rows[subtotalRow].cells[subtotalStartCol + 6].innerHTML = '<b>0</b>';
     }
 
     // Clear transport row for subtotal
-    $(rows[transportRow].children[2]).html('0 <abbr title="' + scFull + '">' + scShort + '</abbr>');
-    $(rows[transportRow].children[3]).html('0 <abbr title="' + lcFull + '">' + lcShort + '</abbr>');
+    rows[transportRow].cells[2].innerHTML = '0 <abbr title="' + scFull + '">' + scShort + '</abbr>';
+    rows[transportRow].cells[3].innerHTML = '0 <abbr title="' + lcFull + '">' + lcShort + '</abbr>';
 
     // Clear grand total row
-    const grandTotalStartCol = isMultiLevel ? 3 : 2;
-    $(rows[grandTotalRow].children[grandTotalStartCol]).html('<b>0</b>');
-    $(rows[grandTotalRow].children[grandTotalStartCol + 1]).html('<b>0</b>');
-    $(rows[grandTotalRow].children[grandTotalStartCol + 2]).html('<b>0</b>');
-    $(rows[grandTotalRow].children[grandTotalStartCol + 3]).html('<b>0</b>');
-    $(rows[grandTotalRow].children[grandTotalStartCol + 4]).html('<b>0' + datetimeS + '</b>');
-    $(rows[grandTotalRow].children[grandTotalStartCol + 5]).html('<b>0</b>');
+    const grandTotalStartCol = 2;
+    rows[grandTotalRow].cells[grandTotalStartCol].innerHTML = '<b>0</b>';
+    rows[grandTotalRow].cells[grandTotalStartCol + 1].innerHTML = '<b>0</b>';
+    rows[grandTotalRow].cells[grandTotalStartCol + 2].innerHTML = '<b>0</b>';
+    rows[grandTotalRow].cells[grandTotalStartCol + 3].innerHTML = '<b>0</b>';
+    rows[grandTotalRow].cells[grandTotalStartCol + 4].innerHTML = '<b>0' + datetimeS + '</b>';
+    rows[grandTotalRow].cells[grandTotalStartCol + 5].innerHTML = '<b>0</b>';
     if (!isMultiLevel) {
-      $(rows[grandTotalRow].children[grandTotalStartCol + 6]).html('<b>0</b>');
+      rows[grandTotalRow].cells[grandTotalStartCol + 6].innerHTML = '<b>0</b>';
     }
 
     // Clear transport row for grand total
-    $(rows[grandTransportRow].children[2]).html('0 <abbr title="' + scFull + '">' + scShort + '</abbr>');
-    $(rows[grandTransportRow].children[3]).html('0 <abbr title="' + lcFull + '">' + lcShort + '</abbr>');
+    rows[grandTransportRow].cells[2].innerHTML = '0 <abbr title="' + scFull + '">' + scShort + '</abbr>';
+    rows[grandTransportRow].cells[3].innerHTML = '0 <abbr title="' + lcFull + '">' + lcShort + '</abbr>';
   }
 
   /**
@@ -859,19 +880,19 @@ class CostsCalculator {
    * @private
    */
   _clearRangeTable(tableId) {
-    const table = $(`#${tableId}`)[0];
+    const table = $(`#${tableId}`);
     if (!table) return;
 
-    const rows = $(`#${tableId} tr`);
+    const rows = getTableRows(`#${tableId}`);
     const datetimeS = options.datetimeS || 's';
 
     // Remove all data rows (keep header and footer)
     for (let i = rows.length - 1; i > 0; i--) {
       const row = rows[i];
-      const firstCell = $(row.children[0]).html();
+      const firstCell = row.cells[0].innerHTML;
       // Check if it's a data row (has level in first cell)
       if (firstCell && !isNaN(parseInt(firstCell))) {
-        $(row).remove();
+        row.remove();
       }
     }
 
@@ -879,17 +900,17 @@ class CostsCalculator {
     const totalsRow = rows.length - 2;
     const transportRow = rows.length - 1;
 
-    $(rows[totalsRow].children[1]).html('<b>0</b>');
-    $(rows[totalsRow].children[2]).html('<b>0</b>');
-    $(rows[totalsRow].children[3]).html('<b>0</b>');
-    $(rows[totalsRow].children[4]).html('<b>0</b>');
-    $(rows[totalsRow].children[5]).html('<b>0' + datetimeS + '</b>');
-    $(rows[totalsRow].children[6]).html('<b>0</b>');
+    rows[totalsRow].cells[1].innerHTML = '<b>0</b>';
+    rows[totalsRow].cells[2].innerHTML = '<b>0</b>';
+    rows[totalsRow].cells[3].innerHTML = '<b>0</b>';
+    rows[totalsRow].cells[4].innerHTML = '<b>0</b>';
+    rows[totalsRow].cells[5].innerHTML = '<b>0' + datetimeS + '</b>';
+    rows[totalsRow].cells[6].innerHTML = '<b>0</b>';
 
     // Check if this is a producer table with extra columns
-    if (rows[totalsRow].children.length > 7) {
-      $(rows[totalsRow].children[7]).html('<b>0</b>');
-      $(rows[totalsRow].children[8]).html('<b>0</b>');
+    if (rows[totalsRow].cells.length > 7) {
+      rows[totalsRow].cells[7].innerHTML = '<b>0</b>';
+      rows[totalsRow].cells[8].innerHTML = '<b>0</b>';
     }
 
     // Reset transport row
@@ -898,8 +919,8 @@ class CostsCalculator {
     const scFull = options.scFull || 'Small Cargo';
     const lcFull = options.lcFull || 'Large Cargo';
 
-    $(rows[transportRow].children[1]).html('0 <abbr title="' + scFull + '">' + scShort + '</abbr>');
-    $(rows[transportRow].children[2]).html('0 <abbr title="' + lcFull + '">' + lcShort + '</abbr>');
+    rows[transportRow].cells[1].innerHTML = '0 <abbr title="' + scFull + '">' + scShort + '</abbr>';
+    rows[transportRow].cells[2].innerHTML = '0 <abbr title="' + lcFull + '">' + lcShort + '</abbr>';
   }
 
   /**
@@ -908,37 +929,38 @@ class CostsCalculator {
    */
   _resetIRNDialog() {
     // Reset IRN level
-    $('#irn-level').val(0);
+    setVal('#irn-level', 0);
 
     // Reset planets spin to default (8)
-    $('#planetsSpin').val(8);
+    setVal('#planetsSpin', 8);
 
     // Rebuild lab levels table with default values
-    const tbl = $('#lab-levels-table')[0];
+    const tbl = $('#lab-levels-table');
     if (tbl) {
-      // Remove all existing rows
-      for (let i = tbl.rows.length - 1; i > 0; i--) {
-        $(tbl.rows[i]).remove();
+      // Remove all existing rows (except header)
+      const rows = getTableRows('#lab-levels-table');
+      for (let i = rows.length - 1; i > 0; i--) {
+        rows[i].remove();
       }
 
       // Add 8 default rows with level 0
       for (let i = 1; i <= 8; i++) {
-        $('#lab-levels-table').append(
+        append('#lab-levels-table',
           '<tr class="' + ((i % 2) === 1 ? 'odd' : 'even') + '">' +
           '<td align="center">' + options.planetNumStr + i + '</td>' +
           '<td align="center" width="20%;"><input type="text" id="lablevel_' + i +
-          '" name="lablevel_' + i + '" class="ui-state-default ui-corner-all ui-input input-3columns input-in-table" value="0" /></td>' +
+          '" name="lablevel_' + i + '" class="form-control form-control-sm input-3columns input-in-table" value="0" /></td>' +
           '<td align="center" width="20%;"><input type="radio" id="labchoice_' + i +
-          '" name="start-pln" value="0" disabled="disabled"/></td>' +
+          '" name="start-pln" value="0" disabled/></td>' +
           '</tr>'
         );
 
         // Re-bind event handlers for new elements
-        $('#lablevel_' + i).unbind('keyup');
-        $('#lablevel_' + i).bind('keyup', validateAndChangeLabLevel);
+        removeAllEvents('#lablevel_' + i, 'keyup');
+        addEvent('#lablevel_' + i, 'keyup', validateAndChangeLabLevel);
 
-        $('#labchoice_' + i).unbind('click');
-        $('#labchoice_' + i).click(function () {
+        removeAllEvents('#labchoice_' + i, 'click');
+        addEvent('#labchoice_' + i, 'click', () => {
           if (calculatorApp) {
             calculatorApp._updateResultingLevel();
             calculatorApp.recalculateAll();
@@ -982,7 +1004,7 @@ class CostsCalculator {
    * @private
    */
   _getInputNumber(selector) {
-    const val = $(selector).val();
+    const val = getVal(selector);
     return val ? parseInt(val, 10) || 0 : 0;
   }
 
@@ -997,7 +1019,7 @@ class CostsCalculator {
     // First check if any radio button is selected
     let haveSelection = false;
     for (let i = 1; i <= planetCount; i++) {
-      if ($(`#labchoice_${i}`)[0].checked) {
+      if (getChecked(`#labchoice_${i}`)) {
         haveSelection = true;
         // Update lab choice in options
         if (options.prm) {
@@ -1009,7 +1031,7 @@ class CostsCalculator {
 
     // If no lab is selected, display "?" and return
     if (!haveSelection) {
-      $('#resulting-level').html('<b>?</b>');
+      setHtml('#resulting-level', '<b>?</b>');
       return;
     }
 
@@ -1018,7 +1040,7 @@ class CostsCalculator {
     for (let i = 1; i <= planetCount; i++) {
       const level = this._getInputNumber(`#lablevel_${i}`);
       if (level > 0) {
-        const isSelected = $(`#labchoice_${i}`)[0].checked;
+        const isSelected = getChecked(`#labchoice_${i}`);
         labs.push([level, isSelected]);
       }
     }
@@ -1038,7 +1060,7 @@ class CostsCalculator {
     }
 
     // Update display
-    $('#resulting-level').html(`<b>${resultingLevel}</b>`);
+    setHtml('#resulting-level', `<b>${resultingLevel}</b>`);
   }
 
   /**
@@ -1050,11 +1072,11 @@ class CostsCalculator {
     const tables = ['table-0-4', 'table-1-4']; // Research tables
 
     for (const tableId of tables) {
-      const rows = $(`#${tableId} tr`);
+      const rows = getTableRows(`#${tableId}`);
       for (let i = 1; i < rows.length - 5; i++) {
-        const rowTechId = parseInt($(rows[i].children[0]).html());
+        const rowTechId = parseInt(rows[i].cells[0].innerHTML);
         if (rowTechId === techId) {
-          return $(rows[i].children[1]).html();
+          return rows[i].cells[1].innerHTML;
         }
       }
     }
@@ -1079,12 +1101,14 @@ class CostsCalculator {
       labChoice: this.currentParams.labChoice
     };
 
-    // Store backup on the dialog element
-    $("#irn-calc").data('irnBackup', irnBackup);
+    // Store backup on the dialog element for Bootstrap modal
+    const modalEl = document.getElementById('irn-calc');
+    modalEl._irnBackup = irnBackup;
+    modalEl._irnExecute = false; // Reset execute flag
 
-    // Reset execute option and open the dialog
-    $("#irn-calc").dialog("option", "execute", false);
-    $("#irn-calc").dialog("open");
+    // Open the Bootstrap modal
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
 
     // Update resulting level display after dialog opens
     this._updateResultingLevel();
@@ -1138,11 +1162,16 @@ function initializeCostsCalculator() {
   calculatorApp = new CostsCalculator(options.techCosts, options.techReqs);
   calculatorApp.init();
 
-  // Initialize planets spin button for IRN dialog
-  if (typeof $.fn.SpinButton === 'function') {
-    $("#planetsSpin").unbind();
+  // Initialize planets spin button for IRN dialog (native implementation)
+  const planetsSpinInput = document.getElementById('planetsSpin');
+  const planetsSpinUp = document.getElementById('planetsSpin-up');
+  const planetsSpinDown = document.getElementById('planetsSpin-down');
 
-    // Create a callback that works with the new calculator system
+  if (planetsSpinInput && planetsSpinUp && planetsSpinDown) {
+    // Set initial value
+    planetsSpinInput.value = options.currPlanetsCount || options.prm.planetsSpin || 8;
+
+    // Handler for changing planet count
     const onPlanetsChange = function (newVal, oldVal) {
       // Validate range
       if (newVal < 1 || newVal > 99) return;
@@ -1154,21 +1183,25 @@ function initializeCostsCalculator() {
       // Update lab levels array
       if (newVal < oldVal) {
         if (oldVal >= 2) {
-          $('#lab-levels-table tr:last').remove();
+          const tbody = document.querySelector('#lab-levels-table tbody');
+          if (tbody && tbody.lastElementChild) {
+            tbody.lastElementChild.remove();
+          }
           options.prm.labLevels.pop();
         }
       } else {
-        $('#lab-levels-table').append(
+        // Add new row for additional planet
+        append('#lab-levels-table',
           '<tr class="' + ((newVal % 2) === 1 ? 'odd' : 'even') + '">' +
           '<td align="center">' + options.planetNumStr + newVal + '</td>' +
           '<td align="center" width="20%;"><input type="text" id="lablevel_' + newVal +
-          '" name="lablevel_' + newVal + '" class="ui-state-default ui-corner-all ui-input input-3columns input-in-table" value="0" /></td>' +
+          '" name="lablevel_' + newVal + '" class="form-control input-3columns input-in-table" value="0" /></td>' +
           '<td align="center" width="20%;"><input type="radio" id="labchoice_' + newVal +
           '" name="start-pln" value="0" disabled="disabled"/></td>' +
           '</tr>'
         );
-        $('#lablevel_' + newVal).bind('keyup', validateAndChangeLabLevel);
-        $('#labchoice_' + newVal).click(() => this._updateResultingLevel());
+        addEvent('#lablevel_' + newVal, 'keyup', validateAndChangeLabLevel);
+        addEvent('#labchoice_' + newVal, 'click', () => calculatorApp._updateResultingLevel());
         options.prm.labLevels.push(0);
       }
 
@@ -1181,138 +1214,191 @@ function initializeCostsCalculator() {
       }
     };
 
-    let spinOptions = { min: 1, max: 99, step: 1, reset: 1, lock: true, onChange: onPlanetsChange };
-    $("#planetsSpin").SpinButton(spinOptions);
-    $('#planetsSpin')[0].value = options.currPlanetsCount || options.prm.planetsSpin || 8;
+    // Up button handler
+    addEvent(planetsSpinUp, 'click', () => {
+      const oldVal = parseInt(planetsSpinInput.value) || 0;
+      const newVal = oldVal + 1;
+      if (newVal <= 99) {
+        planetsSpinInput.value = newVal;
+        onPlanetsChange(newVal, oldVal);
+      }
+    });
+
+    // Down button handler
+    addEvent(planetsSpinDown, 'click', () => {
+      const oldVal = parseInt(planetsSpinInput.value) || 0;
+      const newVal = oldVal - 1;
+      if (newVal >= 1) {
+        planetsSpinInput.value = newVal;
+        onPlanetsChange(newVal, oldVal);
+      }
+    });
   }
 
   // Initialize IRN dialog handlers
   // Lab level inputs - validate on change
-  $('#irn-calc input:text').unbind('keyup');
-  $('#irn-calc input:text').bind('keyup', validateAndChangeLabLevel);
+  const labInputs = document.querySelectorAll('#irn-calc input[type="text"]');
+  labInputs.forEach(input => {
+    removeAllEvents(input, 'keyup');
+    addEvent(input, 'keyup', validateAndChangeLabLevel);
+  });
 
   // Radio buttons for lab choice - update resulting level
-  $('#irn-calc input:radio').unbind('click');
-  $('#irn-calc input:radio').click(function () {
-    if (calculatorApp) {
-      calculatorApp._updateResultingLevel();
-      calculatorApp.recalculateAll();
-    }
+  const radioInputs = document.querySelectorAll('#irn-calc input[type="radio"]');
+  radioInputs.forEach(radio => {
+    removeAllEvents(radio, 'click');
+    addEvent(radio, 'click', () => {
+      if (calculatorApp) {
+        calculatorApp._updateResultingLevel();
+        calculatorApp.recalculateAll();
+      }
+    });
   });
 
   // IRN level field - validate and update resulting level
-  $('#irn-level').unbind();
-  $('#irn-level').keyup(function (e) {
-    // Validate input
-    validateInputNumber.call(this, e);
+  const irnLevelInput = document.getElementById('irn-level');
+  if (irnLevelInput) {
+    removeAllEvents(irnLevelInput, 'keyup');
+    addEvent(irnLevelInput, 'keyup', (e) => {
+      // Validate input
+      validateInputNumber.call(irnLevelInput, e);
 
-    // Update resulting level display and notify new calculator system to recalculate
-    if (calculatorApp) {
-      calculatorApp._updateResultingLevel();
-      calculatorApp.recalculateAll();
-    }
-  });
-
-  // Research lab level - mark as not computed when changed
-  $('#research-lab-level').unbind('keyup');
-  $('#research-lab-level').keyup(function (e) {
-    // Validate input first
-    validateInputNumber.call(this, e);
-    options.resultingLabLevelComputed = false;
-    if (calculatorApp) {
-      calculatorApp._handleParamChange('research-lab-level');
-    }
-  });
-
-  // Add close handler to IRN dialog to restore state on cancel or trigger recalc on done
-  $('#irn-calc').bind('dialogclose', function () {
-    if (!$(this).dialog("option", "execute")) {
-      // User cancelled - restore from backup
-      const backup = $(this).data('irnBackup');
-      if (backup && calculatorApp) {
-        // Restore new system's currentParams
-        calculatorApp.currentParams.irnLevel = backup.irnLevel;
-        calculatorApp.currentParams.labLevels = [...backup.labLevels];
-        calculatorApp.currentParams.labChoice = backup.labChoice;
-
-        // Also update options.prm for IRN dialog UI helpers
-        options.prm.irnLevel = backup.irnLevel;
-        options.prm.planetsSpin = backup.labLevels.length;
-        options.prm.labLevels = [...backup.labLevels];
-        options.prm.labChoice = backup.labChoice;
-        options.currPlanetsCount = backup.labLevels.length;
-
-        // Restore UI elements
-        $('#irn-level').val(backup.irnLevel);
-        $('#planetsSpin').val(backup.labLevels.length);
-
-        // Rebuild lab levels table
-        let tbl = $('#lab-levels-table')[0];
-        for (let i = tbl.rows.length - 1; i > 0; i--) {
-          $(tbl.rows[i]).remove();
-        }
-        for (let i = 1; i <= backup.labLevels.length; i++) {
-          $('#lab-levels-table').append(
-            '<tr class="' + ((i % 2) === 1 ? 'odd' : 'even') + '">' +
-            '<td align="center">' + options.planetNumStr + i + '</td>' +
-            '<td align="center" width="20%;"><input type="text" id="lablevel_' + i +
-            '" name="lablevel_' + i + '" class="ui-state-default ui-corner-all ui-input input-3columns input-in-table" value="' +
-            backup.labLevels[i - 1] + '" /></td>' +
-            '<td align="center" width="20%;"><input type="radio" id="labchoice_' + i +
-            '" name="start-pln" disabled="disabled"/></td>' +
-            '</tr>'
-          );
-          if (backup.labLevels[i - 1] > 0) {
-            $('#labchoice_' + i)[0].disabled = false;
-          }
-          if (backup.labChoice === i - 1) {
-            $('#labchoice_' + i)[0].checked = 'checked';
-          }
-
-          // Re-bind event handlers
-          $('#lablevel_' + i).bind('keyup', validateAndChangeLabLevel);
-          $('#labchoice_' + i).click(function () {
-            if (calculatorApp) {
-              calculatorApp._updateResultingLevel();
-              calculatorApp.recalculateAll();
-            }
-          });
-        }
-
-        // Update resulting level display
-        if (calculatorApp) {
-          calculatorApp._updateResultingLevel();
-        }
-      }
-    } else {
-      // User clicked done - copy resulting lab level to research-lab-level input
+      // Update resulting level display and notify new calculator system to recalculate
       if (calculatorApp) {
-        // Get the resulting lab level from the display
-        const resultingLevelText = $('#resulting-level').text();
-        const resultingLevel = parseInt(resultingLevelText, 10);
-
-        // Only update if we have a valid resulting level (not "?")
-        if (!isNaN(resultingLevel)) {
-          // Update the research-lab-level input
-          $('#research-lab-level').val(resultingLevel);
-
-          // Store the resulting level
-          options.resultingLabLevel = resultingLevel;
-          options.resultingLabLevelComputed = true;
-
-          // Update the currentParams
-          calculatorApp.currentParams.researchLabLevel = resultingLevel;
-        }
-
-        // Collect new params from DOM
-        calculatorApp.currentParams = calculatorApp.collector.collectGlobalParams();
+        calculatorApp._updateResultingLevel();
         calculatorApp.recalculateAll();
       }
-    }
+    });
+  }
 
-    // Remove backup in all cases
-    $(this).removeData('irnBackup');
-  });
+  // Research lab level - mark as not computed when changed
+  const researchLabInput = document.getElementById('research-lab-level');
+  if (researchLabInput) {
+    removeAllEvents(researchLabInput, 'keyup');
+    addEvent(researchLabInput, 'keyup', (e) => {
+      // Validate input first
+      validateInputNumber.call(researchLabInput, e);
+      options.resultingLabLevelComputed = false;
+      if (calculatorApp) {
+        calculatorApp._handleParamChange('research-lab-level');
+      }
+    });
+  }
+
+  // Add Bootstrap modal event handler for IRN dialog
+  const irnModal = document.getElementById('irn-calc');
+  if (irnModal) {
+    addEvent(irnModal, 'hidden.bs.modal', () => {
+      if (!irnModal._irnExecute) {
+        // User cancelled - restore from backup
+        const backup = irnModal._irnBackup;
+        if (backup && calculatorApp) {
+          // Restore new system's currentParams
+          calculatorApp.currentParams.irnLevel = backup.irnLevel;
+          calculatorApp.currentParams.labLevels = [...backup.labLevels];
+          calculatorApp.currentParams.labChoice = backup.labChoice;
+
+          // Also update options.prm for IRN dialog UI helpers
+          options.prm.irnLevel = backup.irnLevel;
+          options.prm.planetsSpin = backup.labLevels.length;
+          options.prm.labLevels = [...backup.labLevels];
+          options.prm.labChoice = backup.labChoice;
+          options.currPlanetsCount = backup.labLevels.length;
+
+          // Restore UI elements
+          setVal('#irn-level', backup.irnLevel);
+          if (planetsSpinInput) {
+            planetsSpinInput.value = backup.labLevels.length;
+          }
+
+          // Rebuild lab levels table
+          const table = document.getElementById('lab-levels-table');
+          if (table) {
+            // Remove all rows except header
+            while (table.rows.length > 1) {
+              table.deleteRow(1);
+            }
+
+            // Re-add rows from backup
+            for (let i = 1; i <= backup.labLevels.length; i++) {
+              append('#lab-levels-table',
+                '<tr class="' + ((i % 2) === 1 ? 'odd' : 'even') + '">' +
+                '<td align="center">' + options.planetNumStr + i + '</td>' +
+                '<td align="center" width="20%;"><input type="text" id="lablevel_' + i +
+                '" name="lablevel_' + i + '" class="form-control input-3columns input-in-table" value="' +
+                backup.labLevels[i - 1] + '" /></td>' +
+                '<td align="center" width="20%;"><input type="radio" id="labchoice_' + i +
+                '" name="start-pln" disabled="disabled"/></td>' +
+                '</tr>'
+              );
+
+              const radioEl = document.getElementById('labchoice_' + i);
+              if (backup.labLevels[i - 1] > 0 && radioEl) {
+                radioEl.disabled = false;
+              }
+              if (backup.labChoice === i - 1 && radioEl) {
+                radioEl.checked = true;
+              }
+
+              // Re-bind event handlers
+              addEvent('#lablevel_' + i, 'keyup', validateAndChangeLabLevel);
+              addEvent('#labchoice_' + i, 'click', () => {
+                if (calculatorApp) {
+                  calculatorApp._updateResultingLevel();
+                  calculatorApp.recalculateAll();
+                }
+              });
+            }
+          }
+
+          // Update resulting level display
+          if (calculatorApp) {
+            calculatorApp._updateResultingLevel();
+          }
+        }
+      } else {
+        // User clicked done - copy resulting lab level to research-lab-level input
+        if (calculatorApp) {
+          // Get the resulting lab level from the display
+          const resultingLevelText = getTextContent('#resulting-level');
+          const resultingLevel = parseInt(resultingLevelText, 10);
+
+          // Only update if we have a valid resulting level (not "?")
+          if (!isNaN(resultingLevel)) {
+            // Update the research-lab-level input
+            setVal('#research-lab-level', resultingLevel);
+
+            // Store the resulting level
+            options.resultingLabLevel = resultingLevel;
+            options.resultingLabLevelComputed = true;
+
+            // Update the currentParams
+            calculatorApp.currentParams.researchLabLevel = resultingLevel;
+          }
+
+          // Collect new params from DOM
+          calculatorApp.currentParams = calculatorApp.collector.collectGlobalParams();
+          calculatorApp.recalculateAll();
+        }
+      }
+
+      // Remove backup in all cases
+      delete irnModal._irnBackup;
+      delete irnModal._irnExecute;
+    });
+  }
+
+  // Handle Done button in IRN dialog
+  const irnDoneBtn = document.getElementById('irn-done-btn');
+  if (irnDoneBtn) {
+    addEvent(irnDoneBtn, 'click', () => {
+      if (irnModal) {
+        irnModal._irnExecute = true;
+        const modal = bootstrap.Modal.getInstance(irnModal);
+        if (modal) modal.hide();
+      }
+    });
+  }
 
   // Expose to window for debugging
   window.calculatorApp = calculatorApp;
@@ -1332,11 +1418,17 @@ function changeLabLevel() {
 
   if (this.value == 0) {
     // Disable and uncheck radio button when level is 0
-    $('#labchoice_' + num)[0].disabled = true;
-    $('#labchoice_' + num)[0].checked = false;
+    const radioEl = document.getElementById('labchoice_' + num);
+    if (radioEl) {
+      radioEl.disabled = true;
+      radioEl.checked = false;
+    }
   } else {
     // Enable radio button when level > 0
-    $('#labchoice_' + num)[0].disabled = false;
+    const radioEl = document.getElementById('labchoice_' + num);
+    if (radioEl) {
+      radioEl.disabled = false;
+    }
   }
 
   // Update the lab levels array (array is 0-indexed, rows are 1-indexed)
