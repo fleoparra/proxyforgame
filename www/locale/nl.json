@@ -416,7 +416,8 @@
     "grav-sens": "Zwaartekrachtsensoren",
     "ovrc-battleship": "Overklokken (Slagschip)",
     "psy-sh-matrix": "Psionische Schildmatrix",
-    "kaelesh-disc-enh": "Kaelesh Ontdekker Verbetering"
+    "kaelesh-disc-enh": "Kaelesh Ontdekker Verbetering",
+    "energy-cost-to-build": "Energiekosten voor de bouw"
   },
   "flight": {
     "datetime-h": "h",

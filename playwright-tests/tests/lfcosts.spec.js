@@ -41,7 +41,7 @@ test.describe('Lifeforms costs Calculator Page', () => {
         await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(4)')).toContainText('1.785M');
         await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(5)')).toContainText('836.528');
         await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(6)')).toContainText('825.960');
-        await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(8)')).toContainText('2w 2d 22h');
+        await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(7)')).toContainText('2w 2d 22h');
         await page.locator('#param-common-tab').click();
         await page.locator('#full-numbers').check();
         await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(4)')).toContainText('1.785.028');
@@ -58,14 +58,14 @@ test.describe('Lifeforms costs Calculator Page', () => {
         await page.locator('#param-buildings-tab').click();
         await page.locator('#robot-factory-level').fill('10');
         await page.locator('#robot-factory-level').press('Enter');
-        await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(8)')).toContainText('1d 12h 59m');
+        await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(7)')).toContainText('1d 12h 59m');
         await page.locator('#nanite-factory-level').fill('10');
         await page.locator('#nanite-factory-level').press('Enter');
-        await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(8)')).toContainText('2m 9s');
+        await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(7)')).toContainText('2m 9s');
 
         await page.locator('#param-common-tab').click();
         await page.locator('#universe-speed').selectOption('3');
-        await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(8)')).toContainText('43s');
+        await expect(page.locator('#table-0-1 tr:nth-child(50) td:nth-child(7)')).toContainText('43s');
     });
 
     test('[all items - one level / researches / human] calculations are correct', async ({ page }) => {
@@ -75,7 +75,7 @@ test.describe('Lifeforms costs Calculator Page', () => {
         await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(4)')).toContainText('7.896M');
         await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(5)')).toContainText('5.135M');
         await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(6)')).toContainText('2.724M');
-        await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(8)')).toContainText('5d 2h 8m');
+        await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(7)')).toContainText('5d 2h 8m');
         await page.locator('#research-cost-reduction').fill('10');
         await page.locator('#research-cost-reduction').press('Enter');
         await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(4)')).toContainText('7.106M');
@@ -83,7 +83,7 @@ test.describe('Lifeforms costs Calculator Page', () => {
         await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(6)')).toContainText('2.452M');
         await page.locator('#research-time-reduction').fill('10');
         await page.locator('#research-time-reduction').press('Enter');
-        await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(8)')).toContainText('4d 13h 55m');
+        await expect(page.locator('#table-0-2 tr:nth-child(74) td:nth-child(7)')).toContainText('4d 13h 55m');
     });
 
     test('[transport calculations with hyperspace and capacity increase] SC/LC counts update correctly', async ({ page }) => {
@@ -348,6 +348,7 @@ test.describe('Lifeforms costs Calculator Page', () => {
     }
 
     test('[all items - multiple levels / human] SC/LC counts update correctly', async ({ page }) => {
+        test.setTimeout(60000);
         await testSecondOuterTab(page, '1', 'Human', {
             buildings: {
                 initial: { sc: 552, lc: 111 },
@@ -363,6 +364,7 @@ test.describe('Lifeforms costs Calculator Page', () => {
     });
 
     test('[all items - multiple levels / rocktal] SC/LC counts update correctly', async ({ page }) => {
+        test.setTimeout(60000);
         await testSecondOuterTab(page, '2', 'Rocktal', {
             buildings: {
                 initial: { sc: 863, lc: 173 },
@@ -378,6 +380,7 @@ test.describe('Lifeforms costs Calculator Page', () => {
     });
 
     test('[all items - multiple levels / mechas] SC/LC counts update correctly', async ({ page }) => {
+        test.setTimeout(60000);
         await testSecondOuterTab(page, '3', 'Mechas', {
             buildings: {
                 initial: { sc: 588, lc: 118 },

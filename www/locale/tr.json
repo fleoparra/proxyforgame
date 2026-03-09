@@ -413,7 +413,8 @@
     "grav-sens": "Yerçekimi Sensörleri",
     "ovrc-battleship": "Hız Aşırtma (Savaş Gemisi)",
     "psy-sh-matrix": "Psionik Koruma Matrisi",
-    "kaelesh-disc-enh": "Kaelesh Kaşif Takviyesi"
+    "kaelesh-disc-enh": "Kaelesh Kaşif Takviyesi",
+    "energy-cost-to-build": "İnşaat enerji maliyeti"
   },
   "flight": {
     "datetime-format-hint": "gg.aa.yyyy sa:dd:ss",

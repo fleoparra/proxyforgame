@@ -418,7 +418,8 @@
     "ovrc-battleship": "Overclocking (Nave de Batalha)",
     "psy-sh-matrix": "Matriz de Escudo Psiónico",
     "kaelesh-disc-enh": "Melhoramento de Descobridor dos Kaelesh",
-    "max-planet-temp": "Planeta temperatura max"
+    "max-planet-temp": "Planeta temperatura max",
+    "energy-cost-to-build": "Custo de energia para construir"
   },
   "flight": {
     "flight-time-format": "99 H:s:s",

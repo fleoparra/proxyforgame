@@ -418,7 +418,8 @@
     "grav-sens": "Gravitation Sensors",
     "ovrc-battleship": "Overclocking (Battleship)",
     "psy-sh-matrix": "Psionic Shield Matrix",
-    "kaelesh-disc-enh": "Kaelesh Discoverer Enhancement"
+    "kaelesh-disc-enh": "Kaelesh Discoverer Enhancement",
+    "energy-cost-to-build": "Energy cost to build"
   },
   "flight": {
     "flight-time-format": "99 H:s:s",

@@ -419,7 +419,8 @@
     "ovrc-battleship": "Overclock (Nave de batalla)",
     "psy-sh-matrix": "Matriz protectora psiónica",
     "kaelesh-disc-enh": "Refuerzo de Descubridor de los Kaelesh",
-    "energy-tech-level": "Nivel de Tec.de energía"
+    "energy-tech-level": "Nivel de Tec.de energía",
+    "energy-cost-to-build": "Coste de energía para construir"
   },
   "flight": {
     "flight-time-format": "99 H:s:s",

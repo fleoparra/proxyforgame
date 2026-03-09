@@ -423,7 +423,8 @@
     "psy-sh-matrix": "Matrice Protezione psionica",
     "kaelesh-disc-enh": "Rinforzo Esploratore Kaelesh",
     "energy-tech-level": "Livello di Tec. Energetica",
-    "max-planet-temp": "Temp. massima del pianeta"
+    "max-planet-temp": "Temp. massima del pianeta",
+    "energy-cost-to-build": "Costo di energia per la costruzione"
   },
   "flight": {
     "datetime-format": "m.d.y H:s:s",

@@ -417,7 +417,8 @@
     "grav-sens": "Gravitationssensoren",
     "ovrc-battleship": "Übertaktung (Schlachtschiff)",
     "psy-sh-matrix": "Psionische Schutzmatrix",
-    "kaelesh-disc-enh": "Kaelesh-Entdeckerverstärkung"
+    "kaelesh-disc-enh": "Kaelesh-Entdeckerverstärkung",
+    "energy-cost-to-build": "Energiekosten für den Bau"
   },
   "flight": {
     "flight-time-format": "99 H:s:s",

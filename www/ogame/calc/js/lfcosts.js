@@ -95,11 +95,21 @@ function resetParams() {
                 if (outer === 1)
                     rows[row].children[3].children[0].value = 0;
                 let firstDataCol = (outer === 1) ? 4 : 3;
-                for (let cell = firstDataCol; cell < firstDataCol + (outer === 0 ? 7 : 6); cell++) {
-                    if (cell === firstDataCol + 4)
+                for (let cell = firstDataCol; cell < firstDataCol + (outer === 0 ? 6 : 5); cell++) {
+                    if (cell === firstDataCol + 3)
                         rows[row].children[cell].innerHTML = '0' + options.datetimeS;
                     else
                         rows[row].children[cell].innerHTML = '0';
+                }
+                let techID = Number(rows[row].children[0].innerHTML);
+                if ([1002, 2002, 3002, 4002].includes(techID)) {
+                    const hintEl = rows[row].children[1].querySelector('.energy-cost-hint');
+                    if (hintEl) {
+                        const existing = bootstrap.Tooltip.getInstance(hintEl);
+                        if (existing) existing.dispose();
+                        hintEl.setAttribute('title', options.energyCostToBuildLabel + ': 0');
+                        new bootstrap.Tooltip(hintEl);
+                    }
                 }
             }
         }
@@ -176,12 +186,21 @@ function updateRow() {
         row.children[firstDataCol].innerHTML = ogamizeNum(resCost[0], options.unitSuffix);
         row.children[firstDataCol + 1].innerHTML = ogamizeNum(resCost[1], options.unitSuffix);
         row.children[firstDataCol + 2].innerHTML = ogamizeNum(resCost[2], options.unitSuffix);
-        row.children[firstDataCol + 3].innerHTML = ogamizeNum(energyCost, options.unitSuffix);
-        row.children[firstDataCol + 4].innerHTML = timespanToShortenedString(timeSpan, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true);
-        row.children[firstDataCol + 5].innerHTML = ogamizeNum(points, options.unitSuffix);
+        row.children[firstDataCol + 3].innerHTML = timespanToShortenedString(timeSpan, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true);
+        row.children[firstDataCol + 4].innerHTML = ogamizeNum(points, options.unitSuffix);
         if (outerTab === 0) {
             let tmCost = getHalvingCost(techID, timeSpan);
-            row.children[firstDataCol + 6].innerHTML = ogamizeNum(tmCost, options.unitSuffix);
+            row.children[firstDataCol + 5].innerHTML = ogamizeNum(tmCost, options.unitSuffix);
+        }
+        if ([1002, 2002, 3002, 4002].includes(techID)) {
+            const hintEl = row.children[1].querySelector('.energy-cost-hint');
+            if (hintEl) {
+                const tooltipText = options.energyCostToBuildLabel + ': ' + ogamizeNum(energyCost, options.unitSuffix);
+                const existing = bootstrap.Tooltip.getInstance(hintEl);
+                if (existing) existing.dispose();
+                hintEl.setAttribute('title', tooltipText);
+                new bootstrap.Tooltip(hintEl);
+            }
         }
         dataRow[0] = resCost[0];
         dataRow[1] = resCost[1];
@@ -194,11 +213,10 @@ function updateRow() {
         row.children[firstDataCol].innerHTML = '0';
         row.children[firstDataCol + 1].innerHTML = '0';
         row.children[firstDataCol + 2].innerHTML = '0';
-        row.children[firstDataCol + 3].innerHTML = '0';
-        row.children[firstDataCol + 4].innerHTML = '0' + options.datetimeS;
-        row.children[firstDataCol + 5].innerHTML = '0';
+        row.children[firstDataCol + 3].innerHTML = '0' + options.datetimeS;
+        row.children[firstDataCol + 4].innerHTML = '0';
         if (outerTab === 0)
-            row.children[firstDataCol + 6].innerHTML = '0';
+            row.children[firstDataCol + 5].innerHTML = '0';
         options.techData[rowKey] = null;
     }
     updateTotals();
@@ -267,15 +285,24 @@ function updateParams() {
                         options.techData[key][2] = newCost[2];
                         rows[idx].children[firstDataCol + 2].innerHTML = ogamizeNum(newCost[2], options.unitSuffix);
                         options.techData[key][3] = newEnergy;
-                        rows[idx].children[firstDataCol + 3].innerHTML = ogamizeNum(newEnergy, options.unitSuffix);
                         options.techData[key][4] = newTime;
-                        rows[idx].children[firstDataCol + 4].innerHTML = timespanToShortenedString(newTime, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true);
+                        rows[idx].children[firstDataCol + 3].innerHTML = timespanToShortenedString(newTime, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true);
                         if (Number(keyParts[1]) === 0) {
                             if (Number(keyParts[2]) < 5) {
                                 let tmCost = getHalvingCost(techID, newTime);
-                                rows[idx].children[firstDataCol + 6].innerHTML = ogamizeNum(tmCost, options.unitSuffix);
+                                rows[idx].children[firstDataCol + 5].innerHTML = ogamizeNum(tmCost, options.unitSuffix);
                             } else {
-                                rows[idx].children[firstDataCol + 6].innerHTML = '0';
+                                rows[idx].children[firstDataCol + 5].innerHTML = '0';
+                            }
+                        }
+                        if ([1002, 2002, 3002, 4002].includes(techID)) {
+                            const hintEl = rows[idx].children[1].querySelector('.energy-cost-hint');
+                            if (hintEl) {
+                                const tooltipText = options.energyCostToBuildLabel + ': ' + ogamizeNum(newEnergy, options.unitSuffix);
+                                const existing = bootstrap.Tooltip.getInstance(hintEl);
+                                if (existing) existing.dispose();
+                                hintEl.setAttribute('title', tooltipText);
+                                new bootstrap.Tooltip(hintEl);
                             }
                         }
                     } else {
@@ -285,11 +312,10 @@ function updateParams() {
                         rows[idx].children[firstDataCol].innerHTML = '0';
                         rows[idx].children[firstDataCol + 1].innerHTML = '0';
                         rows[idx].children[firstDataCol + 2].innerHTML = '0';
-                        rows[idx].children[firstDataCol + 3].innerHTML = '0';
-                        rows[idx].children[firstDataCol + 4].innerHTML = '0' + options.datetimeS;
-                        rows[idx].children[firstDataCol + 5].innerHTML = '0';
+                        rows[idx].children[firstDataCol + 3].innerHTML = '0' + options.datetimeS;
+                        rows[idx].children[firstDataCol + 4].innerHTML = '0';
                         if (Number(keyParts[1]) === 0)
-                            rows[idx].children[firstDataCol + 6].innerHTML = '0';
+                            rows[idx].children[firstDataCol + 5].innerHTML = '0';
                     }
                     needUpd[keyParts[1]] = true;
                 }
@@ -352,14 +378,8 @@ function updateTotals(needUpd) {
             rows[row].children[3].innerHTML = '<b>' + ogamizeNum(totals[0], options.unitSuffix) + '</b>';
             rows[row].children[4].innerHTML = '<b>' + ogamizeNum(totals[1], options.unitSuffix) + '</b>';
             rows[row].children[5].innerHTML = '<b>' + ogamizeNum(totals[2], options.unitSuffix) + '</b>';
-            rows[row].children[6].innerHTML = '<b>' + ogamizeNum(totals[3], options.unitSuffix) + '</b>';
-            rows[row].children[7].innerHTML = '<b>' + timespanToShortenedString(totals[4], options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true) + '</b>';
-            rows[row].children[8].innerHTML = '<b>' + ogamizeNum(totals[5], options.unitSuffix) + '</b>';
-
-            if (outer === 0 && innerIdx > 2) {
-                let tmCost = getHalvingCost(1000, totals[4]);
-                rows[row].children[9].innerHTML = '<b>' + ogamizeNum(tmCost, options.unitSuffix) + '</b>';
-            }
+            rows[row].children[6].innerHTML = '<b>' + timespanToShortenedString(totals[4], options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true) + '</b>';
+            rows[row].children[7].innerHTML = '<b>' + ogamizeNum(totals[5], options.unitSuffix) + '</b>';
             grandTotals[0] += totals[0];
             grandTotals[1] += totals[1];
             grandTotals[2] += totals[2];
@@ -375,11 +395,10 @@ function updateTotals(needUpd) {
             rows[row].children[2].innerHTML = '<b>' + ogamizeNum(grandTotals[0], options.unitSuffix) + '</b>';
             rows[row].children[3].innerHTML = '<b>' + ogamizeNum(grandTotals[1], options.unitSuffix) + '</b>';
             rows[row].children[4].innerHTML = '<b>' + ogamizeNum(grandTotals[2], options.unitSuffix) + '</b>';
-            rows[row].children[5].innerHTML = '<b>' + ogamizeNum(grandTotals[3], options.unitSuffix) + '</b>';
-            rows[row].children[6].innerHTML = '<b>' + timespanToShortenedString(grandTotals[4], options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true) + '</b>';
-            rows[row].children[7].innerHTML = '<b>' + ogamizeNum(grandTotals[5], options.unitSuffix) + '</b>';
+            rows[row].children[5].innerHTML = '<b>' + timespanToShortenedString(grandTotals[4], options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true) + '</b>';
+            rows[row].children[6].innerHTML = '<b>' + ogamizeNum(grandTotals[5], options.unitSuffix) + '</b>';
             if (outer === 0)
-                rows[row].children[8].innerHTML = '<b>0</b>';
+                rows[row].children[7].innerHTML = '<b>0</b>';
             let avbMet = getInputNumber(document.getElementById(`metal-available-${outer}-${inner}`));
             let avbCrys = getInputNumber(document.getElementById(`crystal-available-${outer}-${inner}`));
             let avbDeut = getInputNumber(document.getElementById(`deut-available-${outer}-${inner}`));
@@ -450,9 +469,8 @@ function updateOneMultTab() {
         rows[totalsRow].children[1].innerHTML = '<b>0</b>';
         rows[totalsRow].children[2].innerHTML = '<b>0</b>';
         rows[totalsRow].children[3].innerHTML = '<b>0</b>';
-        rows[totalsRow].children[4].innerHTML = '<b>0</b>';
-        rows[totalsRow].children[5].innerHTML = '<b>' + timespanToShortenedString(0, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true) + '</b>';
-        rows[totalsRow].children[6].innerHTML = '<b>0</b>';
+        rows[totalsRow].children[4].innerHTML = '<b>' + timespanToShortenedString(0, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true) + '</b>';
+        rows[totalsRow].children[5].innerHTML = '<b>0</b>';
         rows[totalsRow + 2].children[1].innerHTML = '<b>0</b>';
         rows[totalsRow + 2].children[2].innerHTML = '<b>0</b>';
         rows[totalsRow + 2].children[3].innerHTML = '<b>0</b>';
@@ -492,7 +510,7 @@ function updateOneMultTab() {
     if (reductables.includes(techID))
         bldCostRdc += mrcRdc;
     let resCost = [0, 0, 0];
-    let totalMet = 0, totalCrys = 0, totalDeut = 0, energy = 0, maxEnrg = 0, totalTime = 0, production = 0, maxProd = 0, consumption = 0, maxCons = 0, points = 0, totalPts = 0, time = 0;
+    let totalMet = 0, totalCrys = 0, totalDeut = 0, totalTime = 0, points = 0, totalPts = 0;
     let rowData = Array();
     let rowStr;
     for (let i = levelFrom; i < levelTo; i++) {
@@ -506,9 +524,6 @@ function updateOneMultTab() {
         totalMet += resCost[0];
         totalCrys += resCost[1];
         totalDeut += resCost[2];
-        energy = getBuildEnergyCostLF(techID, i + 1, options.techCosts, ionTechLevel, bldCostRdc);
-        rowData.push(ogamizeNum(energy, options.unitSuffix));
-        maxEnrg = Math.max(maxEnrg, energy);
         let time = getAdjustedTime(techID, i, i + 1);
         rowData.push(timespanToShortenedString(time, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true));
         totalTime += time;
@@ -536,9 +551,8 @@ function updateOneMultTab() {
     rows[totalsRow].children[1].innerHTML = '<b>' + ogamizeNum(totalMet, options.unitSuffix) + '</b>';
     rows[totalsRow].children[2].innerHTML = '<b>' + ogamizeNum(totalCrys, options.unitSuffix) + '</b>';
     rows[totalsRow].children[3].innerHTML = '<b>' + ogamizeNum(totalDeut, options.unitSuffix) + '</b>';
-    rows[totalsRow].children[4].innerHTML = '<b>' + ogamizeNum(maxEnrg, options.unitSuffix) + '</b>';
-    rows[totalsRow].children[5].innerHTML = '<b>' + timespanToShortenedString(totalTime, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true) + '</b>';
-    rows[totalsRow].children[6].innerHTML = '<b>' + ogamizeNum(Math.round(totalPts), options.unitSuffix) + '</b>';
+    rows[totalsRow].children[4].innerHTML = '<b>' + timespanToShortenedString(totalTime, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true) + '</b>';
+    rows[totalsRow].children[5].innerHTML = '<b>' + ogamizeNum(Math.round(totalPts), options.unitSuffix) + '</b>';
 
     let avbMet = getInputNumber(document.getElementById('metal-available-2-1'));
     let avbCrys = getInputNumber(document.getElementById('crystal-available-2-1'));

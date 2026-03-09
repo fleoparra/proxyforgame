@@ -421,7 +421,8 @@
     "grav-sens": "Sensory Grawitacyjne",
     "ovrc-battleship": "Przetaktowanie (Okręt Wojenny)",
     "psy-sh-matrix": "Psioniczna Matryca Ochronna",
-    "kaelesh-disc-enh": "Wzmocnienie Odkrywcy Kaeleshów"
+    "kaelesh-disc-enh": "Wzmocnienie Odkrywcy Kaeleshów",
+    "energy-cost-to-build": "Koszt energii przy budowie"
   },
   "flight": {
     "flight-time-format": "99 H:s:s",

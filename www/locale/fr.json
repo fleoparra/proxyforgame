@@ -419,7 +419,8 @@
     "grav-sens": "Capteurs gravitationnels",
     "ovrc-battleship": "Surcadençage (vaisseau de bataille)",
     "psy-sh-matrix": "Matrice de protection psionique",
-    "kaelesh-disc-enh": "Renforcement d`explorateur kaelesh"
+    "kaelesh-disc-enh": "Renforcement d`explorateur kaelesh",
+    "energy-cost-to-build": "Coût en énergie pour la construction"
   },
   "flight": {
     "datetime-format": "m.d.y H:s:s",

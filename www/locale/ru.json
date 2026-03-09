@@ -421,7 +421,8 @@
     "grav-sens": "Гравитационные сенсоры",
     "ovrc-battleship": "Разгон (Линкор)",
     "psy-sh-matrix": "Псионная матрица щита",
-    "kaelesh-disc-enh": "Улучшение Кэлиш для Исследователя"
+    "kaelesh-disc-enh": "Улучшение Кэлиш для Исследователя",
+    "energy-cost-to-build": "Стоимость энергии при постройке"
   },
   "flight": {
     "flight-time-format": "99 H:s:s",

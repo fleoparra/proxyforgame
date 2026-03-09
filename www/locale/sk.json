@@ -415,7 +415,8 @@
     "grav-sens": "Gravitačné senzory",
     "ovrc-battleship": "Pretaktovanie (Bojová loď)",
     "psy-sh-matrix": "Psionický matricový štít",
-    "kaelesh-disc-enh": "Objaviteľský rozlet kaelešov"
+    "kaelesh-disc-enh": "Objaviteľský rozlet kaelešov",
+    "energy-cost-to-build": "Energetické náklady pri výstavbe"
   },
   "flight": {
     "flight-time-format": "99 H:s:s",

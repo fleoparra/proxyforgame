@@ -49,6 +49,7 @@
     options.fieldHint = '<?= $l['field-hint'] ?>';
     options.msgMinConstraintViolated = '<?= $l['msg-min-constraint-violated'] ?>';
     options.msgMaxConstraintViolated = '<?= $l['msg-max-constraint-violated'] ?>';
+    options.energyCostToBuildLabel = '<?= $l['energy-cost-to-build'] ?>';
 
     options.techCosts = {
             <?php $first = true; ?>
@@ -259,15 +260,15 @@
                   <?php endforeach; ?>
                 </tr>
                 <?php $techs = getTechsByType($j); $row = 1; ?>
+                <?php $energyHintBuildings = [1002, 2002, 3002, 4002]; ?>
                 <?php foreach ($techs as $tech) :?>
                 <tr class="<?= ($row++ % 2) === 1 ? 'odd' : 'even' ?>">
                   <td style="display: none;"><?=$tech?></td>
-                  <td class="min"><?=$l[$techData[$tech][0]]?></td>
+                  <td class="min"><?=$l[$techData[$tech][0]]?><?php if (in_array($tech, $energyHintBuildings)): ?> <i class="bi bi-lightning-charge energy-cost-hint" data-bs-toggle="tooltip" title="<?= $l['energy-cost-to-build'] ?>: 0"></i><?php endif; ?></td>
                   <?php if ($i == 1): ?>
                   <td align="center"><input type="text" class="form-control form-control-sm level-input ui-input-margin" value="0"/></td>
                   <?php endif;?>
                   <td align="center"><input type="text" class="form-control form-control-sm level-input ui-input-margin" value="0"/></td>
-                  <td align="center">0</td>
                   <td align="center">0</td>
                   <td align="center">0</td>
                   <td align="center">0</td>
@@ -286,17 +287,15 @@
                   <td align="center" class="border-n border-s"><b>0</b></td>
                   <td align="center" class="border-n border-s"><b>0</b></td>
                   <td align="center" class="border-n border-s"><b>0</b></td>
-                  <td align="center" class="border-n border-s"><b>0</b></td>
                   <?php if ($i == 0):?>
                   <td align="center" class="border-n border-s"><b>0</b></td>
                   <?php endif; ?>
                   <td align="center" class="border-n border-s border-e"><b>0</b></td>
                 </tr>
-                <tr><td colspan="<?= ($i == 1)?'10':'9' ?>" height="5px">&nbsp;</td></tr>
+                <tr><td colspan="9" height="5px">&nbsp;</td></tr>
                 <tr>
                   <td style="display: none;">gt</td>
                   <td colspan="<?= ($i == 1)?'3':'2' ?>" class="border-n border-w"><?=$l['grand-total']?></td>
-                  <td align="center" class="border-n">0</td>
                   <td align="center" class="border-n">0</td>
                   <td align="center" class="border-n">0</td>
                   <td align="center" class="border-n">0</td>
@@ -313,7 +312,6 @@
                   <td align="center"><input id="crystal-available-<?=$i?>-<?=$j?>" type="text" name="crystal-available" class="form-control form-control-sm res-input" value="0" /></td>
                   <td align="center"><input id="deut-available-<?=$i?>-<?=$j?>" type="text" name="deut-available" class="form-control form-control-sm res-input" value="0" /></td>
                   <td></td>
-                  <td></td>
                   <?php if ($i == 0):?>
                   <td></td>
                   <?php endif; ?>
@@ -326,7 +324,6 @@
                   <td align="center">0</td>
                   <td align="center">0</td>
                   <td></td>
-                  <td></td>
                   <?php if ($i == 0):?>
                   <td></td>
                   <?php endif; ?>
@@ -337,7 +334,7 @@
                   <td class="border-s border-w"><?=$l['transports-needed']?></td>
                   <td align="center" class="border-s">0 <?=$l['sc-short']?></td>
                   <td align="center" class="border-s">0 <?=$l['lc-short']?></td>
-                  <td colspan="<?= ($i == 1)?'5':(($i == 0)?'5':'4') ?>" align="center" class="border-s">&nbsp;</td>
+                  <td colspan="<?= ($i == 1)?'4':(($i == 0)?'4':'3') ?>" align="center" class="border-s">&nbsp;</td>
                   <td align="center" class="border-s border-e">&nbsp;</td>
                 </tr>
               </table>
@@ -372,11 +369,10 @@
               <?php endforeach; ?>
               </tr>
               <tr>
-                <td colspan="7">&nbsp;</td>
+                <td colspan="6">&nbsp;</td>
               </tr>
               <tr class="<?= ($row % 2) === 1 ? 'odd' : 'even' ?>">
                 <td class="border-n border-w"><?=$l['total']?></td>
-                <td align="center" class="border-n"><b>0</b></td>
                 <td align="center" class="border-n"><b>0</b></td>
                 <td align="center" class="border-n"><b>0</b></td>
                 <td align="center" class="border-n"><b>0</b></td>
@@ -389,7 +385,6 @@
                 <td align="center"><input id="crystal-available-2-1" type="text" name="crystal-available" class="form-control form-control-sm res-input" value="0" /></td>
                 <td align="center"><input id="deut-available-2-1" type="text" name="deut-available" class="form-control form-control-sm res-input" value="0" /></td>
                 <td></td>
-                <td></td>
                 <td class="border-e"></td>
               </tr>
               <tr>
@@ -398,14 +393,13 @@
                 <td align="center">0</td>
                 <td align="center">0</td>
                 <td></td>
-                <td></td>
                 <td class="border-e"></td>
               </tr>
               <tr class="<?= ($row % 2) === 1 ? 'odd' : 'even' ?>">
                 <td class="border-s border-w"><?=$l['transports-needed']?></td>
                 <td align="center" class="border-s">0 <?=$l['sc-short']?></td>
                 <td align="center" class="border-s">0 <?=$l['lc-short']?></td>
-                <td colspan="4" class="border-s border-e"></td>
+                <td colspan="3" class="border-s border-e"></td>
               </tr>
             </table>
           </div>
