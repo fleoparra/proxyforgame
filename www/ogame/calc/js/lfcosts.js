@@ -149,37 +149,9 @@ function updateRow() {
     const mrcRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.005 * getInputNumber(document.getElementById('mrc-level')) : 0;
     if (reductables.has(techID))
         bldCostRdc += mrcRdc;
-    let dataRow = [0, 0, 0, 0, 0, 0];
     // Для зданий возможен снос, по остальным техам - новый уровень должен быть строго больше старого
     if ((techLevelTo > techLevelFrom || Number(techID) % 1000 < 100) && techLevelTo >= 0) {
-        let timeSpan = getAdjustedTime(techID, techLevelFrom, techLevelTo);
-        let resCost = getBuildCostLF(techID, techLevelFrom, techLevelTo, options.techCosts, ionTechLevel, rsrCostRdc, bldCostRdc);
-        let energyCost = getBuildEnergyCostLF(techID, techLevelTo, options.techCosts, ionTechLevel, bldCostRdc);
-        let points;
-        if (techLevelTo > techLevelFrom) {
-            points = Math.floor((resCost[0] + resCost[1] + resCost[2]) / 1000);
-        } else {
-            let buildResCost = getBuildCostLF(techID, techLevelTo, techLevelFrom, options.techCosts, 0);
-            points = -1 * Math.floor((buildResCost[0] + buildResCost[1] + buildResCost[2]) / 1000);
-        }
-        row.children[firstDataCol].innerHTML = ogamizeNum(resCost[0], options.unitSuffix);
-        row.children[firstDataCol + 1].innerHTML = ogamizeNum(resCost[1], options.unitSuffix);
-        row.children[firstDataCol + 2].innerHTML = ogamizeNum(resCost[2], options.unitSuffix);
-        row.children[firstDataCol + 3].innerHTML = timespanToShortenedString(timeSpan, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true);
-        row.children[firstDataCol + 4].innerHTML = ogamizeNum(points, options.unitSuffix);
-        if (outerTab === 0) {
-            let tmCost = getHalvingCost(techID, timeSpan);
-            row.children[firstDataCol + 5].innerHTML = ogamizeNum(tmCost, options.unitSuffix);
-        }
-        if (ENERGY_TECH_IDS.has(techID))
-            refreshEnergyTooltip(row, energyCost);
-        dataRow[0] = resCost[0];
-        dataRow[1] = resCost[1];
-        dataRow[2] = resCost[2];
-        dataRow[3] = energyCost;
-        dataRow[4] = timeSpan;
-        dataRow[5] = points;
-        options.techData[rowKey] = dataRow;
+        writeRowCalcData(row, outerTab, techID, firstDataCol, techLevelFrom, techLevelTo, ionTechLevel, rsrCostRdc, bldCostRdc, rowKey);
     } else {
         row.children[firstDataCol].innerHTML = '0';
         row.children[firstDataCol + 1].innerHTML = '0';
@@ -356,6 +328,30 @@ function updateTotals(needUpd) {
 }
 
 const ENERGY_TECH_IDS = new Set([1002, 2002, 3002, 4002]);
+
+function writeRowCalcData(row, outerTab, techID, firstDataCol, techLevelFrom, techLevelTo, ionTechLevel, rsrCostRdc, bldCostRdc, rowKey) {
+    const resCost = getBuildCostLF(techID, techLevelFrom, techLevelTo, options.techCosts, ionTechLevel, rsrCostRdc, bldCostRdc);
+    const energyCost = getBuildEnergyCostLF(techID, techLevelTo, options.techCosts, ionTechLevel, bldCostRdc);
+    const timeSpan = getAdjustedTime(techID, techLevelFrom, techLevelTo);
+    let points;
+    if (techLevelTo > techLevelFrom) {
+        points = Math.floor((resCost[0] + resCost[1] + resCost[2]) / 1000);
+    } else {
+        const buildResCost = getBuildCostLF(techID, techLevelTo, techLevelFrom, options.techCosts, 0);
+        points = -1 * Math.floor((buildResCost[0] + buildResCost[1] + buildResCost[2]) / 1000);
+    }
+    row.children[firstDataCol].innerHTML = ogamizeNum(resCost[0], options.unitSuffix);
+    row.children[firstDataCol + 1].innerHTML = ogamizeNum(resCost[1], options.unitSuffix);
+    row.children[firstDataCol + 2].innerHTML = ogamizeNum(resCost[2], options.unitSuffix);
+    row.children[firstDataCol + 3].innerHTML = timespanToShortenedString(timeSpan, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true);
+    row.children[firstDataCol + 4].innerHTML = ogamizeNum(points, options.unitSuffix);
+    if (outerTab === 0) {
+        row.children[firstDataCol + 5].innerHTML = ogamizeNum(getHalvingCost(techID, timeSpan), options.unitSuffix);
+    }
+    if (ENERGY_TECH_IDS.has(techID))
+        refreshEnergyTooltip(row, energyCost);
+    options.techData[rowKey] = [resCost[0], resCost[1], resCost[2], energyCost, timeSpan, points];
+}
 
 function readParamsFromDOM() {
     options.prm.robotFactoryLevel = getInputNumber(document.getElementById('robot-factory-level'));
