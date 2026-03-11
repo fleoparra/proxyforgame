@@ -455,7 +455,7 @@ function updateOneMultTab() {
         let tbl = document.getElementById('commons-table');
         let allRows = tbl.querySelectorAll('tr');
         let footer = Array.from(allRows).slice(tbl.rows.length - 5);
-        footer.forEach(r => r.parentNode.removeChild(r));
+        footer.forEach(r => r.remove());
         for (let i = tbl.rows.length - 1; i > 0; i--) {
             tbl.rows[i].remove();
         }
@@ -486,7 +486,7 @@ function updateOneMultTab() {
     let tbl = document.getElementById(targetTable);
     let allRows = Array.from(tbl.querySelectorAll('tr'));
     let footer = allRows.slice(tbl.rows.length - 5);
-    footer.forEach(r => r.parentNode.removeChild(r));
+    footer.forEach(r => r.remove());
     for (let i = tbl.rows.length - 1; i > 0; i--) {
         tbl.rows[i].remove();
     }
