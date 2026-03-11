@@ -527,9 +527,9 @@ function updateOneMultTab() {
         let time = getAdjustedTime(techID, i, i + 1);
         rowData.push(timespanToShortenedString(time, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true));
         totalTime += time;
-        points = (resCost[0] + resCost[1] + resCost[2]) / 1000.0;
+        points = (resCost[0] + resCost[1] + resCost[2]) / 1000;
         totalPts += points;
-        rowData.push(ogamizeNum(Math.round((resCost[0] + resCost[1] + resCost[2]) / 1000.0), options.unitSuffix));
+        rowData.push(ogamizeNum(Math.round((resCost[0] + resCost[1] + resCost[2]) / 1000), options.unitSuffix));
 
         rowStr = '<tr class=' + ((i % 2) === 1 ? 'odd' : 'even') + '>';
         for (let cellNum = 0; cellNum < rowData.length; cellNum++) {
