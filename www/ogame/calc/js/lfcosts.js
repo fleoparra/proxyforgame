@@ -402,19 +402,7 @@ function updateTotals(needUpd) {
             rows[rows.length - 2].children[3].innerHTML = '<b>' + ogamizeNum(needCrys, options.unitSuffix) + '</b>';
             rows[rows.length - 2].children[4].innerHTML = '<b>' + ogamizeNum(needDeut, options.unitSuffix) + '</b>';
 
-            let totalRes = needMet + needCrys + needDeut;
-            let capSC = 5000 * (1 + 0.05 * options.prm.hyperTechLevel);
-            if (options.prm.playerClass === 0) {
-                capSC += 5000 * 0.25;
-            }
-            capSC += Math.floor(5000 * 0.01 * options.prm.capIncrSC);
-            let needSC = Math.ceil(totalRes / capSC);
-            let capLC = 25000 * (1 + 0.05 * options.prm.hyperTechLevel);
-            if (options.prm.playerClass === 0) {
-                capLC += 25000 * 0.25;
-            }
-            capLC += Math.floor(25000 * 0.01 * options.prm.capIncrLC);
-            let needLC = Math.ceil(totalRes / capLC);
+            const { needSC, needLC } = calcShipCount(needMet + needCrys + needDeut);
             rows[rows.length - 1].children[2].innerHTML = numToOGame(needSC) + ' ' + '<abbr data-bs-toggle="tooltip" title="' + options.scFull + '">' + options.scShort + '</abbr>';
             rows[rows.length - 1].children[3].innerHTML = numToOGame(needLC) + ' ' + '<abbr data-bs-toggle="tooltip" title="' + options.lcFull + '">' + options.lcShort + '</abbr>';
         }
@@ -422,6 +410,20 @@ function updateTotals(needUpd) {
 
     options.save();
     initTooltips();
+}
+
+function calcShipCount(totalRes) {
+    let capSC = 5000 * (1 + 0.05 * options.prm.hyperTechLevel);
+    if (options.prm.playerClass === 0) {
+        capSC += 5000 * 0.25;
+    }
+    capSC += Math.floor(5000 * 0.01 * options.prm.capIncrSC);
+    let capLC = 25000 * (1 + 0.05 * options.prm.hyperTechLevel);
+    if (options.prm.playerClass === 0) {
+        capLC += 25000 * 0.25;
+    }
+    capLC += Math.floor(25000 * 0.01 * options.prm.capIncrLC);
+    return { needSC: Math.ceil(totalRes / capSC), needLC: Math.ceil(totalRes / capLC) };
 }
 
 function getAdjustedTime(techID, techLevelFrom, techLevelTo) {
@@ -560,19 +562,7 @@ function updateOneMultTab() {
     rows[totalsRow + 2].children[2].innerHTML = '<b>' + ogamizeNum(needCrys, options.unitSuffix) + '</b>';
     rows[totalsRow + 2].children[3].innerHTML = '<b>' + ogamizeNum(needDeut, options.unitSuffix) + '</b>';
 
-    let totalRes = totalMet + totalCrys + totalDeut;
-    let capSC = 5000 * (1 + 0.05 * options.prm.hyperTechLevel);
-    if (options.prm.playerClass === 0) {
-        capSC += 5000 * 0.25;
-    }
-    capSC += Math.floor(5000 * 0.01 * options.prm.capIncrSC);
-    let needSC = Math.ceil(totalRes / capSC);
-    let capLC = 25000 * (1 + 0.05 * options.prm.hyperTechLevel);
-    if (options.prm.playerClass === 0) {
-        capLC += 25000 * 0.25;
-    }
-    capLC += Math.floor(25000 * 0.01 * options.prm.capIncrLC);
-    let needLC = Math.ceil(totalRes / capLC);
+    const { needSC, needLC } = calcShipCount(totalMet + totalCrys + totalDeut);
     rows[totalsRow + 3].children[1].innerHTML = numToOGame(needSC) + ' <abbr data-bs-toggle="tooltip" title="' + options.scFull + '">' + options.scShort + '</abbr>';
     rows[totalsRow + 3].children[2].innerHTML = numToOGame(needLC) + ' <abbr data-bs-toggle="tooltip" title="' + options.lcFull + '">' + options.lcShort + '</abbr>';
 
