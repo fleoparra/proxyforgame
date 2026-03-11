@@ -518,9 +518,11 @@ function updateOneMultTab() {
         rowStr = '';
         rowData.push(i + 1);
         resCost = getBuildCostLF(techID, i, i + 1, options.techCosts, ionTechLevel, rsrCostRdc, bldCostRdc);
-        rowData.push(ogamizeNum(resCost[0], options.unitSuffix));
-        rowData.push(ogamizeNum(resCost[1], options.unitSuffix));
-        rowData.push(ogamizeNum(resCost[2], options.unitSuffix));
+        rowData.push(
+            ogamizeNum(resCost[0], options.unitSuffix),
+            ogamizeNum(resCost[1], options.unitSuffix),
+            ogamizeNum(resCost[2], options.unitSuffix)
+        );
         totalMet += resCost[0];
         totalCrys += resCost[1];
         totalDeut += resCost[2];
