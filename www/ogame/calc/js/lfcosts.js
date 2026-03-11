@@ -86,9 +86,7 @@ function resetParams() {
     document.getElementById('research-time-reduction').value = options.prm.researchTimeReduction;
 
     for (let outer = 0; outer < 2; outer++) {
-        let innerNums = [1, 2];
-        for (let innerIdx = 0; innerIdx < innerNums.length; innerIdx++) {
-            let inner = innerNums[innerIdx];
+        for (const inner of [1, 2]) {
             let rows = document.querySelectorAll('#table-' + outer + '-' + inner + ' tr');
             for (let row = 1; row < rows.length - footerRows; row++) {
                 rows[row].children[2].children[0].value = 0;
