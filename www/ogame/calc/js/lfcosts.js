@@ -165,7 +165,35 @@ function updateRow() {
     updateTotals();
 }
 
-// Учитывает изменения в параметрах: уровни фабрики роботов, фабрики нанитов, скорость вселенной, . Обновляет время в соответствующих полях глобального массива рассчитанных значений
+function updateTechDataRow(rows, idx, key, keyParts, techID, techLevelFrom, techLevelTo, ionTechLevel, rsrCostRdc, bldCostRdc, needUpd) {
+    const newCost = getBuildCostLF(techID, techLevelFrom, techLevelTo, options.techCosts, ionTechLevel, rsrCostRdc, bldCostRdc);
+    const newTime = getAdjustedTime(techID, techLevelFrom, techLevelTo);
+    const newEnergy = getBuildEnergyCostLF(techID, techLevelTo, options.techCosts, ionTechLevel, bldCostRdc);
+    const firstDataCol = (keyParts[1] * 1 === 1) ? 4 : 3;
+    if (newTime > 0) {
+        options.techData[key][0] = newCost[0];
+        rows[idx].children[firstDataCol].innerHTML = ogamizeNum(newCost[0], options.unitSuffix);
+        options.techData[key][1] = newCost[1];
+        rows[idx].children[firstDataCol + 1].innerHTML = ogamizeNum(newCost[1], options.unitSuffix);
+        options.techData[key][2] = newCost[2];
+        rows[idx].children[firstDataCol + 2].innerHTML = ogamizeNum(newCost[2], options.unitSuffix);
+        options.techData[key][3] = newEnergy;
+        options.techData[key][4] = newTime;
+        rows[idx].children[firstDataCol + 3].innerHTML = timespanToShortenedString(newTime, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true);
+        if (Number(keyParts[1]) === 0) {
+            rows[idx].children[firstDataCol + 5].innerHTML = Number(keyParts[2]) < 5
+                ? ogamizeNum(getHalvingCost(techID, newTime), options.unitSuffix)
+                : '0';
+        }
+        if (ENERGY_TECH_IDS.has(techID))
+            refreshEnergyTooltip(rows[idx], newEnergy);
+    } else {
+        clearTableRow(rows[idx], keyParts[1] * 1);
+    }
+    needUpd[keyParts[1]] = true;
+}
+
+// Учитывает изменения в параметрах: уровни фабрики роботов, фабрики нанитов, скорость вселенной. Обновляет время в соответствующих полях глобального массива рассчитанных значений
 function updateParams() {
     const techTypes = new Set([1, 2]);
     readParamsFromDOM();
@@ -175,73 +203,36 @@ function updateParams() {
         options.prm.playerClass = 1;
     else
         options.prm.playerClass = 0;
-    let needUpd = { 0: false, 1: false };
-    let techLevelFrom;
-    let techLevelTo;
+    const needUpd = { 0: false, 1: false };
     const rsrCostRdc = getInputNumber(document.getElementById('research-cost-reduction'));
-    let baseBbldCostRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.01 * getInputNumber(document.getElementById('megalith-level')) : 0;
+    const baseBldCostRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.01 * getInputNumber(document.getElementById('megalith-level')) : 0;
     const reductables = new Set([1, 2, 3, 4, 12, 2001, 2002]);
     const mrcRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.005 * getInputNumber(document.getElementById('mrc-level')) : 0;
-    const ionTechLevel = (techLevelTo > techLevelFrom) ? 0 : getInputNumber(document.getElementById('ion-tech-level'));
+    const ionTechLevel = getInputNumber(document.getElementById('ion-tech-level'));
     Object.entries(options.techData).forEach(([key, value]) => {
         if (value == null)
             return;
-        let keyParts = key.split(/-/);
-        if (techTypes.has(1 * keyParts[2])) {
-            let bldCostRdc = baseBbldCostRdc;
-            let rows = document.querySelectorAll('#table-' + keyParts[1] + '-' + keyParts[2] + ' tr');
-            for (let idx = 1; idx < rows.length; idx++) {
-                let rowID = rows[idx].children[0].innerHTML;
-                if (rowID === keyParts[0]) {
-                    if (keyParts[1] * 1 === 1) {
-                        techLevelFrom = 1 * rows[idx].children[2].children[0].value;
-                        techLevelTo = 1 * rows[idx].children[3].children[0].value;
-                    } else {
-                        techLevelTo = 1 * rows[idx].children[2].children[0].value;
-                        techLevelFrom = techLevelTo === 0 ? 0 : techLevelTo - 1;
-                    }
-                    let techID = Number(rowID);
-                    if (reductables.has(techID))
-                        bldCostRdc += mrcRdc;
-                    let newCost = getBuildCostLF(techID, techLevelFrom, techLevelTo, options.techCosts, ionTechLevel, rsrCostRdc, bldCostRdc);
-                    let newTime = getAdjustedTime(techID, techLevelFrom, techLevelTo);
-                    let newEnergy = getBuildEnergyCostLF(techID, techLevelTo, options.techCosts, ionTechLevel, bldCostRdc);
-                    let firstDataCol = (keyParts[1] * 1 === 1) ? 4 : 3;
-                    if (newTime > 0) {
-                        options.techData[key][0] = newCost[0];
-                        rows[idx].children[firstDataCol].innerHTML = ogamizeNum(newCost[0], options.unitSuffix);
-                        options.techData[key][1] = newCost[1];
-                        rows[idx].children[firstDataCol + 1].innerHTML = ogamizeNum(newCost[1], options.unitSuffix);
-                        options.techData[key][2] = newCost[2];
-                        rows[idx].children[firstDataCol + 2].innerHTML = ogamizeNum(newCost[2], options.unitSuffix);
-                        options.techData[key][3] = newEnergy;
-                        options.techData[key][4] = newTime;
-                        rows[idx].children[firstDataCol + 3].innerHTML = timespanToShortenedString(newTime, options.datetimeW, options.datetimeD, options.datetimeH, options.datetimeM, options.datetimeS, true);
-                        if (Number(keyParts[1]) === 0) {
-                            if (Number(keyParts[2]) < 5) {
-                                let tmCost = getHalvingCost(techID, newTime);
-                                rows[idx].children[firstDataCol + 5].innerHTML = ogamizeNum(tmCost, options.unitSuffix);
-                            } else {
-                                rows[idx].children[firstDataCol + 5].innerHTML = '0';
-                            }
-                        }
-                        if (ENERGY_TECH_IDS.has(techID))
-                            refreshEnergyTooltip(rows[idx], newEnergy);
-                    } else {
-                        rows[idx].children[2].children[0].value = 0;
-                        if (keyParts[1] * 1 === 1)
-                            rows[idx].children[3].children[0].value = 0;
-                        rows[idx].children[firstDataCol].innerHTML = '0';
-                        rows[idx].children[firstDataCol + 1].innerHTML = '0';
-                        rows[idx].children[firstDataCol + 2].innerHTML = '0';
-                        rows[idx].children[firstDataCol + 3].innerHTML = '0' + options.datetimeS;
-                        rows[idx].children[firstDataCol + 4].innerHTML = '0';
-                        if (Number(keyParts[1]) === 0)
-                            rows[idx].children[firstDataCol + 5].innerHTML = '0';
-                    }
-                    needUpd[keyParts[1]] = true;
-                }
+        const keyParts = key.split(/-/);
+        if (!techTypes.has(1 * keyParts[2]))
+            return;
+        let bldCostRdc = baseBldCostRdc;
+        const rows = document.querySelectorAll('#table-' + keyParts[1] + '-' + keyParts[2] + ' tr');
+        for (let idx = 1; idx < rows.length; idx++) {
+            const rowID = rows[idx].children[0].innerHTML;
+            if (rowID !== keyParts[0])
+                continue;
+            let techLevelFrom, techLevelTo;
+            if (keyParts[1] * 1 === 1) {
+                techLevelFrom = 1 * rows[idx].children[2].children[0].value;
+                techLevelTo = 1 * rows[idx].children[3].children[0].value;
+            } else {
+                techLevelTo = 1 * rows[idx].children[2].children[0].value;
+                techLevelFrom = techLevelTo === 0 ? 0 : techLevelTo - 1;
             }
+            const techID = Number(rowID);
+            if (reductables.has(techID))
+                bldCostRdc += mrcRdc;
+            updateTechDataRow(rows, idx, key, keyParts, techID, techLevelFrom, techLevelTo, ionTechLevel, rsrCostRdc, bldCostRdc, needUpd);
         }
     });
     updateTotals(needUpd);
