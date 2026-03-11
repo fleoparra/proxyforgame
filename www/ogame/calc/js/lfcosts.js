@@ -236,12 +236,10 @@ function updateParams() {
     options.prm.researchTimeReduction = getInputNumber(document.getElementById('research-time-reduction'));
     if (document.getElementById('class-2').checked)
         options.prm.playerClass = 2;
-    else {
-        if (document.getElementById('class-1').checked)
-            options.prm.playerClass = 1;
-        else
-            options.prm.playerClass = 0;
-    }
+    else if (document.getElementById('class-1').checked)
+        options.prm.playerClass = 1;
+    else
+        options.prm.playerClass = 0;
     options.prm.fullNumbers = document.getElementById('full-numbers').checked;
     let needUpd = { 0: false, 1: false };
     let techLevelFrom;
