@@ -224,7 +224,7 @@ function updateRow() {
 
 // Учитывает изменения в параметрах: уровни фабрики роботов, фабрики нанитов, скорость вселенной, . Обновляет время в соответствующих полях глобального массива рассчитанных значений
 function updateParams() {
-    let techTypes = [1, 2];
+    const techTypes = new Set([1, 2]);
     options.prm.robotFactoryLevel = getInputNumber(document.getElementById('robot-factory-level'));
     options.prm.naniteFactoryLevel = getInputNumber(document.getElementById('nanite-factory-level'));
     options.prm.universeSpeed = document.getElementById('universe-speed').value;
@@ -257,7 +257,7 @@ function updateParams() {
         if (value == null)
             return;
         let keyParts = key.split(/-/);
-        if (techTypes.includes(1 * keyParts[2])) {
+        if (techTypes.has(1 * keyParts[2])) {
             let bldCostRdc = baseBbldCostRdc;
             let rows = document.querySelectorAll('#table-' + keyParts[1] + '-' + keyParts[2] + ' tr');
             for (let idx = 1; idx < rows.length; idx++) {
