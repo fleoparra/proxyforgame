@@ -58,6 +58,17 @@ let options = {
 };
 const footerRows = 6;
 
+function clearAvailableResourceInputs() {
+    for (let outer = 0; outer < 3; outer++) {
+        for (let inner = 1; inner < 3; inner++) {
+            ['metal', 'crystal', 'deut'].forEach(res => {
+                const el = document.getElementById(`${res}-available-${outer}-${inner}`);
+                if (el) el.value = 0;
+            });
+        }
+    }
+}
+
 function resetParams() {
     options.prm.robotFactoryLevel = 0;
     options.prm.naniteFactoryLevel = 0;
@@ -103,16 +114,7 @@ function resetParams() {
 
     document.getElementById('class-' + options.prm.playerClass).checked = true;
     document.getElementById('full-numbers').checked = false;
-    for (let outer = 0; outer < 3; outer++) {
-        for (let inner = 1; inner < 3; inner++) {
-            const mEl = document.getElementById(`metal-available-${outer}-${inner}`);
-            const cEl = document.getElementById(`crystal-available-${outer}-${inner}`);
-            const dEl = document.getElementById(`deut-available-${outer}-${inner}`);
-            if (mEl) mEl.value = 0;
-            if (cEl) cEl.value = 0;
-            if (dEl) dEl.value = 0;
-        }
-    }
+    clearAvailableResourceInputs();
 
     updateTotals();
     updateOneMultTab();
