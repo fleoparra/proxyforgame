@@ -163,7 +163,7 @@ function updateRow() {
     }
     const rsrCostRdc = getInputNumber(document.getElementById('research-cost-reduction'));
     const ionTechLevel = (techLevelTo > techLevelFrom) ? 0 : getInputNumber(document.getElementById('ion-tech-level'));
-    var bldCostRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.01 * getInputNumber(document.getElementById('megalith-level')) : 0;
+    let bldCostRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.01 * getInputNumber(document.getElementById('megalith-level')) : 0;
     const reductables = new Set([1, 2, 3, 4, 12, 2001, 2002]);
     const mrcRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.005 * getInputNumber(document.getElementById('mrc-level')) : 0;
     if (reductables.has(techID))
@@ -245,7 +245,7 @@ function updateParams() {
     let techLevelFrom;
     let techLevelTo;
     const rsrCostRdc = getInputNumber(document.getElementById('research-cost-reduction'));
-    var baseBbldCostRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.01 * getInputNumber(document.getElementById('megalith-level')) : 0;
+    let baseBbldCostRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.01 * getInputNumber(document.getElementById('megalith-level')) : 0;
     const reductables = new Set([1, 2, 3, 4, 12, 2001, 2002]);
     const mrcRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.005 * getInputNumber(document.getElementById('mrc-level')) : 0;
     const ionTechLevel = (techLevelTo > techLevelFrom) ? 0 : getInputNumber(document.getElementById('ion-tech-level'));
@@ -497,7 +497,7 @@ function updateOneMultTab() {
     }
     const rsrCostRdc = getInputNumber(document.getElementById('research-cost-reduction'));
     const ionTechLevel = (levelTo > levelFrom) ? 0 : getInputNumber(document.getElementById('ion-tech-level'));
-    var bldCostRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.01 * getInputNumber(document.getElementById('megalith-level')) : 0;
+    let bldCostRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.01 * getInputNumber(document.getElementById('megalith-level')) : 0;
     const reductables = new Set([1, 2, 3, 4, 12, 2001, 2002]);
     const mrcRdc = Number(document.getElementById('race-selector').value) === 2 ? 0.005 * getInputNumber(document.getElementById('mrc-level')) : 0;
     if (reductables.has(techID))
