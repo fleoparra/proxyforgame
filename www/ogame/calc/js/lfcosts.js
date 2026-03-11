@@ -433,6 +433,12 @@ function getAdjustedTime(techID, techLevelFrom, techLevelTo) {
         options.prm.robotFactoryLevel, options.prm.naniteFactoryLevel, options.prm.universeSpeed, rsrTimeRdc, megalithRdc);
 }
 
+function clearTableBodyRows(tbl) {
+    for (let i = tbl.rows.length - 1; i > 0; i--) {
+        tbl.rows[i].remove();
+    }
+}
+
 function updateOneMultTab() {
     options.prm.robotFactoryLevel = getInputNumber(document.getElementById('robot-factory-level'));
     options.prm.naniteFactoryLevel = getInputNumber(document.getElementById('nanite-factory-level'));
@@ -453,9 +459,7 @@ function updateOneMultTab() {
         let allRows = tbl.querySelectorAll('tr');
         let footer = Array.from(allRows).slice(tbl.rows.length - 5);
         footer.forEach(r => r.remove());
-        for (let i = tbl.rows.length - 1; i > 0; i--) {
-            tbl.rows[i].remove();
-        }
+        clearTableBodyRows(tbl);
         footer.forEach(r => tbl.tBodies[0].appendChild(r));
         let rows = tbl.querySelectorAll('tr');
         let totalsRow = rows.length - 4;
@@ -484,9 +488,7 @@ function updateOneMultTab() {
     let allRows = Array.from(tbl.querySelectorAll('tr'));
     let footer = allRows.slice(tbl.rows.length - 5);
     footer.forEach(r => r.remove());
-    for (let i = tbl.rows.length - 1; i > 0; i--) {
-        tbl.rows[i].remove();
-    }
+    clearTableBodyRows(tbl);
 
     let levelFrom = getInputNumber(document.getElementById('tab2-from-level'));
     let levelTo = getInputNumber(document.getElementById('tab2-to-level'));
