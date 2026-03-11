@@ -352,7 +352,6 @@ function updateTotals(needUpd) {
         if (needUpd?.[outer] === false)
             continue;
         let innerNums = [1, 2];
-        let firstDataCol = (outer === 0) ? 3 : 4;
         let grandTotals = [0, 0, 0, 0, 0, 0];
         for (const inner of innerNums) {
             let rows = document.querySelectorAll('#table-' + outer + '-' + inner + ' tr');
