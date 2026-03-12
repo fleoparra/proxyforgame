@@ -584,8 +584,6 @@ class IncrementalRenderer extends Renderer {
       return;
     }
     
-    // TODO: Implement smarter incremental updates
-    // For now, just do full render
     this.renderTable(tableId, requests, results, params);
     this.lastRendered[key] = { requests, results, params };
   }
