@@ -57,7 +57,7 @@ class GlobalParams {
    * @returns {number} Multiplicative factor (0.75 = 25% reduction)
    */
   get technocratFactor() {
-    let factor = 1.0;
+    let factor = 1;
     if (this.technocrat) factor *= 0.75;
     if (this.researchBonus) factor *= 0.75;
     if (this.playerClass === 2) factor *= 0.75; // Discoverer
@@ -109,7 +109,7 @@ class GlobalParams {
   get smallCargoCapacity() {
     const baseCapacity = 5000;
     const hyperBonus = 1 + 0.05 * this.hyperTechLevel;
-    const classBonus = this.playerClass === 0 ? 1.25 : 1.0; // Collector +25%
+    const classBonus = this.playerClass === 0 ? 1.25 : 1; // Collector +25%
     return baseCapacity * hyperBonus * classBonus;
   }
 
@@ -119,7 +119,7 @@ class GlobalParams {
   get largeCargoCapacity() {
     const baseCapacity = 25000;
     const hyperBonus = 1 + 0.05 * this.hyperTechLevel;
-    const classBonus = this.playerClass === 0 ? 1.25 : 1.0; // Collector +25%
+    const classBonus = this.playerClass === 0 ? 1.25 : 1; // Collector +25%
     return baseCapacity * hyperBonus * classBonus;
   }
 
