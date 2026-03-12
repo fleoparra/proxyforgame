@@ -283,7 +283,7 @@ class Renderer {
    * @param {GlobalParams} params - For transport calculation
    */
   renderRangeTable(rangeData, results, productions, consumptions, params) {
-    const { techId, fromLevel, toLevel } = rangeData;
+    const { techId, fromLevel } = rangeData;
 
     // Determine which table to use
     const isProducer = [1, 2, 3, 4, 12, 212].includes(techId);
@@ -576,9 +576,6 @@ class IncrementalRenderer extends Renderer {
       this.lastRendered[key] = { requests, results, params };
       return;
     }
-    
-    // Check what changed
-    let hasChanges = false;
     
     // Simple check: if lengths differ, do full render
     if (requests.length !== last.requests.length) {
