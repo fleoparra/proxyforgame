@@ -161,7 +161,9 @@
     "disr-chamber-bonus": "Disruptör Odası Bonusu",
     "total-lf-energy-bonus": "Enerji üretimi için Yaşam Formları toplam bonusu",
     "lf-tech-bonus": "Yaşam Formları teknoloji bonusu",
-    "country": "Ülke"
+    "country": "Ülke",
+    "res-available": "Mevcut kaynaklar",
+    "res-needed": "Kaynaklar eksik"
   },
   "index": {
     "title": "ProxyForGame - OGame için hesaplamalar",
@@ -287,8 +289,6 @@
     "research-cost-reduction": "Araştırma maliyetlerinin azaltılması %",
     "research-time-reduction": "Araştırma süresinin kısaltılması %",
     "cargo-cap-increase": "Kargo kapasitesi artışı (%): ",
-    "res-available": "Mevcut kaynaklar",
-    "res-needed": "Kaynaklar eksik",
     "times-hint": "Lütfen sayfanın altındaki notu okuyun",
     "race-1": "İnsanlar",
     "race-2": "Rock’tal",

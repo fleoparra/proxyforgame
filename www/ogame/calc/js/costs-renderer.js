@@ -105,13 +105,13 @@ class Renderer {
    * NOTE: Does NOT clear input values - preserves user-entered levels
    * @private
    */
-  _clearTableData(tableId, rows, isMultiLevel) {
+  _clearTableData(_tableId, rows, isMultiLevel) {
     const firstDataCol = isMultiLevel ? 4 : 3;
     const numDataCols = isMultiLevel ? 6 : 7;
 
     // Clear data rows (skip header and footer)
     // Only clear calculated result cells, NOT input cells
-    for (let i = 1; i < rows.length - 5; i++) {
+    for (let i = 1; i < rows.length - 6; i++) {
       for (let col = 0; col < numDataCols; col++) {
         const cellIndex = firstDataCol + col;
         if (col === 4) {
@@ -136,7 +136,7 @@ class Renderer {
     // Moon buildings have +10000 in table
     const searchId = isMoon ? techId + 10000 : techId;
 
-    for (let i = 1; i < rows.length - 5; i++) {
+    for (let i = 1; i < rows.length - 6; i++) {
       const rowTechId = parseInt(rows[i].cells[0].innerHTML);
       if (rowTechId === searchId) {
         return i;
@@ -151,8 +151,7 @@ class Renderer {
    * @private
    */
   _renderSubtotalRow(tableId, rows, totals, params, isMultiLevel) {
-    const subtotalRow = rows.length - 5;
-    const transportRow = rows.length - 4;
+    const subtotalRow = rows.length - 6;
 
     const isBuildingTable = tableId.endsWith('-2') || tableId.endsWith('-3');
     const isFleetOrDefenseTable = tableId.endsWith('-5') || tableId.endsWith('-6');
@@ -175,12 +174,6 @@ class Renderer {
       this._renderSubtotalDmCell(rows[subtotalRow].cells[subtotalStartCol + 6], isFleetOrDefenseTable, totals, params);
     }
 
-    // Transport calculations for subtotal
-    const transport = this._calculateTransport(totals.totalResources, params);
-    rows[transportRow].cells[2].innerHTML =
-      `${transport.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`;
-    rows[transportRow].cells[3].innerHTML =
-      `${transport.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`;
   }
 
   /**
@@ -190,7 +183,7 @@ class Renderer {
   _sumBuildingLevels(rows, isMultiLevel) {
     const targetColIdx = isMultiLevel ? 3 : 2;
     let totalLevels = 0;
-    for (let i = 1; i < rows.length - 5; i++) {
+    for (let i = 1; i < rows.length - 6; i++) {
       const levelInput = rows[i].cells[targetColIdx].querySelector('input');
       if (levelInput) {
         const level = parseFloat(levelInput.value) || 0;
@@ -227,8 +220,7 @@ class Renderer {
 
     tableIds.forEach(tableId => {
       const rows = getTableRows(`#${tableId}`);
-      const grandTotalRow = rows.length - 2;
-      const grandTransportRow = rows.length - 1;
+      const grandTotalRow = rows.length - 4;
       // In grand totals row, we use DOM child indices (not visual columns)
       // The "Grand Total" colspan cell is at child 1, so first data (metal) is at child 2
       // which is nth-child(3) in CSS 1-based indexing
@@ -253,12 +245,24 @@ class Renderer {
         }
       }
 
-      // Update grand transport row
-      const transport = this._calculateTransport(grandTotal.totalResources, params);
-      rows[grandTransportRow].cells[2].innerHTML =
-        `${transport.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`;
-      rows[grandTransportRow].cells[3].innerHTML =
-        `${transport.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`;
+      // Update res-needed and delivery transport rows (grand total minus available resources)
+      const [, tabOuter, tabInner] = tableId.split('-');
+      const resNeededRow = rows.length - 2;
+      const deliveryTransportRow = rows.length - 1;
+      const metal   = getInputNumber(document.getElementById(`metal-available-${tabOuter}-${tabInner}`));
+      const crystal = getInputNumber(document.getElementById(`crystal-available-${tabOuter}-${tabInner}`));
+      const deut    = getInputNumber(document.getElementById(`deut-available-${tabOuter}-${tabInner}`));
+      const needMetal   = Math.max(0, grandTotal.metal - metal);
+      const needCrystal = Math.max(0, grandTotal.crystal - crystal);
+      const needDeut    = Math.max(0, grandTotal.deuterium - deut);
+      rows[resNeededRow].cells[2].innerHTML = this._formatNumber(needMetal, params);
+      rows[resNeededRow].cells[3].innerHTML = this._formatNumber(needCrystal, params);
+      rows[resNeededRow].cells[4].innerHTML = this._formatNumber(needDeut, params);
+      const delivery = this._calculateTransport(needMetal + needCrystal + needDeut, params);
+      rows[deliveryTransportRow].cells[2].innerHTML =
+        `${delivery.small} <abbr title="${this.scFull}">${this.scShort}</abbr>`;
+      rows[deliveryTransportRow].cells[3].innerHTML =
+        `${delivery.large} <abbr title="${this.lcFull}">${this.lcShort}</abbr>`;
     });
   }
   

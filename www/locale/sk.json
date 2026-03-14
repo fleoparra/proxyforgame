@@ -165,7 +165,9 @@
     "disr-chamber-bonus": "Bonus Komory porušenia",
     "total-lf-energy-bonus": "Celkový bonus Foriem života pre produkciu energie",
     "lf-tech-bonus": "Technologický bonus Foriem života",
-    "country": "Krajina"
+    "country": "Krajina",
+    "res-available": "Dostupné zdroje",
+    "res-needed": "Chýbajúce zdroje"
   },
   "index": {
     "title": "ProxyForGame - software pre online hry v prehliadači OGame",
@@ -289,8 +291,6 @@
     "research-cost-reduction": "Zníženie nákladov na výskum %",
     "research-time-reduction": "Skrátenie času výskumu %",
     "cargo-cap-increase": "Zvýšenie kapacity nákladu (%): ",
-    "res-available": "Dostupné zdroje",
-    "res-needed": "Chýbajúce zdroje",
     "times-hint": "Prečítajte si prosím poznámku v dolnej časti stránky",
     "race-1": "Ľudia",
     "race-2": "Kameňáci",

@@ -295,12 +295,12 @@
                   }
                 }
               ?>
-              <div class="tab-pane fade <?= $j === $firstInnerTab ? 'show active' : '' ?> ui-panel no-mp" id="tab-<?=$i?>-<?=$j?>" role="tabpanel">
-                <table id="table-<?=$i?>-<?=$j?>" class="lined" cellpadding="0" cellspacing="1" border="0" width="100%">
+              <div class="tab-pane fade <?= $j === $firstInnerTab ? 'show active' : '' ?> no-mp" id="tab-<?=$i?>-<?=$j?>" role="tabpanel">
+                <table id="table-<?=$i?>-<?=$j?>" class="lined" cellpadding="0" cellspacing="1" border="0">
                   <tr>
                     <th style="display: none;"></th>
                     <?php foreach ($colHeaders as $idx => $header) :?>
-                    <th <?=($idx > 0)?'align="center"':''?>>
+                    <th <?=($idx > 0)?'align="center"':''?> style="white-space:nowrap">
                       <?php if ($header == 'dm-abbr'): ?>
                         <abbr title="<?= $l['dm-explanation'] ?>"><?=$l[$header] ?></abbr>
                       <?php else: ?>
@@ -316,7 +316,7 @@
                   ?>
                   <tr class="<?= ($row++ % 2) === 1 ? 'odd' : 'even' ?>">
                     <td style="display: none;"><?=$techID?></td>
-                    <td><?=$l[$techData[$tech][0]]?></td>
+                    <td style="white-space: nowrap"><?=$l[$techData[$tech][0]]?></td>
                     <?php if ($i == 1): ?>
                     <td align="center"><input type="text" class="form-control form-control-sm level-input ui-input-margin" value="0"/></td>
                     <?php endif;?>
@@ -350,13 +350,6 @@
                     <?php endif; ?>
                     <td align="center" class="border-n border-s border-e" ><b>0</b></td>
                   </tr>
-                  <tr>
-                    <td style="display: none;"></td>
-                    <td ><?=$l['transports-needed']?></td>
-                    <td align="center" >0 <?=$l['sc-short']?></td>
-                    <td align="center" >0 <?=$l['lc-short']?></td>
-                    <td colspan="<?= ($i == 1)?'6':(($i == 0)?'6':'5') ?>" ></td>
-                  </tr>
                   <tr><td colspan="<?= ($i == 1)?'10':'9' ?>" height=5px;>&nbsp;</td></tr>
                   <tr>
                     <td style="display: none;"></td>
@@ -373,11 +366,29 @@
                   </tr>
                   <tr>
                     <td style="display: none;"></td>
-                    <td class="border-s border-w" ><?=$l['transports-needed']?></td>
-                    <td align="center" class="border-s" >0 <?=$l['sc-short']?></td>
-                    <td align="center" class="border-s" >0 <?=$l['lc-short']?></td>
-                    <td colspan="<?= ($i == 1)?'5':(($i == 0)?'5':'4') ?>" align="center" class="border-s" >&nbsp;</td>
-                    <td align="center" class="border-s border-e" >&nbsp;</td>
+                    <td colspan="<?= ($i == 1)?'3':'2' ?>" class="border-w"><?=$l['res-available']?></td>
+                    <td align="center"><input id="metal-available-<?=$i?>-<?=$j?>" type="text" name="metal-available" class="form-control form-control-sm" style="text-align:center" value="0" /></td>
+                    <td align="center"><input id="crystal-available-<?=$i?>-<?=$j?>" type="text" name="crystal-available" class="form-control form-control-sm" style="text-align:center" value="0" /></td>
+                    <td align="center"><input id="deut-available-<?=$i?>-<?=$j?>" type="text" name="deut-available" class="form-control form-control-sm" style="text-align:center" value="0" /></td>
+                    <td colspan="<?= ($i == 1)?'2':'3' ?>"></td>
+                    <td class="border-e"></td>
+                  </tr>
+                  <tr>
+                    <td style="display: none;"></td>
+                    <td colspan="<?= ($i == 1)?'3':'2' ?>" class="border-w"><?=$l['res-needed']?></td>
+                    <td align="center">0</td>
+                    <td align="center">0</td>
+                    <td align="center">0</td>
+                    <td colspan="<?= ($i == 1)?'2':'3' ?>"></td>
+                    <td class="border-e"></td>
+                  </tr>
+                  <tr>
+                    <td style="display: none;"></td>
+                    <td class="border-s border-w"><?=$l['transports-needed']?></td>
+                    <td align="center" class="border-s">0 <?=$l['sc-short']?></td>
+                    <td align="center" class="border-s">0 <?=$l['lc-short']?></td>
+                    <td colspan="<?= ($i == 1)?'5':(($i == 0)?'5':'4') ?>" align="center" class="border-s">&nbsp;</td>
+                    <td align="center" class="border-s border-e">&nbsp;</td>
                   </tr>
                 </table>
               </div>

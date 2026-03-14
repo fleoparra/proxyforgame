@@ -163,7 +163,9 @@
     "disr-chamber-bonus": "Bonus della Camera di Disruzione",
     "total-lf-energy-bonus": "Bonus totale delle Forme di Vita alla produzione di energia",
     "lf-tech-bonus": "Bonus tecnologico delle Forme di Vita",
-    "country": "Paese"
+    "country": "Paese",
+    "res-available": "Risorse disponibili",
+    "res-needed": "Risorse mancanti"
   },
   "index": {
     "title": "ProxyForGame - strumenti per i giochi per browser OGame",
@@ -295,8 +297,6 @@
     "research-cost-reduction": "Riduzione dei costi di ricerca %",
     "research-time-reduction": "Riduzione del tempo di ricerca %",
     "cargo-cap-increase": "Aumento della capacità di carico (%): ",
-    "res-available": "Risorse disponibili",
-    "res-needed": "Risorse mancanti",
     "times-hint": "Si prega di leggere la nota in fondo alla pagina",
     "race-1": "Umani",
     "race-2": "Rock'tal",

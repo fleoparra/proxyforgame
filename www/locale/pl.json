@@ -164,7 +164,9 @@
     "disr-chamber-bonus": "Premia Komory Zakłóceń",
     "total-lf-energy-bonus": "Całkowity bonus Form Życia do produkcji energii",
     "lf-tech-bonus": "Bonus technologiczny Form Życia",
-    "country": "Kraj"
+    "country": "Kraj",
+    "res-available": "Dostępne zasoby",
+    "res-needed": "Brak zasobów"
   },
   "index": {
     "title": "Narzedzia do gier przegladarkowych OGame",
@@ -295,8 +297,6 @@
     "research-cost-reduction": "Redukcja kosztów badań %",
     "research-time-reduction": "Skrócenie czasu badań %",
     "cargo-cap-increase": "Zwiększenie pojemności ładunku (%): ",
-    "res-available": "Dostępne zasoby",
-    "res-needed": "Brak zasobów",
     "times-hint": "Proszę przeczytać uwagę na dole strony",
     "race-1": "Ludzie",
     "race-2": "Rock`talowie",

@@ -160,7 +160,9 @@
     "disr-chamber-bonus": "Disruptiekamerbonus",
     "total-lf-energy-bonus": "Totale Life Forms-bonus voor energieproductie",
     "lf-tech-bonus": "Life Forms-technologiebonus",
-    "country": "Land"
+    "country": "Land",
+    "res-available": "Beschikbare middelen",
+    "res-needed": "Ontbrekende middelen"
   },
   "index": {
     "title": "ProxyForGame - instrumenten het browser spel OGame",
@@ -290,8 +292,6 @@
     "research-cost-reduction": "Vermindering onderzoekskosten %",
     "research-time-reduction": "Verkorting onderzoekstijd %",
     "cargo-cap-increase": "Toename laadcapaciteit (%): ",
-    "res-available": "Beschikbare middelen",
-    "res-needed": "Ontbrekende middelen",
     "times-hint": "Lees de opmerking onderaan de pagina",
     "race-1": "Mensen",
     "race-2": "Rock'tal",

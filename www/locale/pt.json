@@ -164,7 +164,9 @@
     "disr-chamber-bonus": "Bônus da Câmara de Disrupção",
     "total-lf-energy-bonus": "Bônus total das Formas de Vida para produção de energia",
     "lf-tech-bonus": "Bônus de tecnologia das Formas de Vida",
-    "country": "País"
+    "country": "País",
+    "res-available": "Recursos disponíveis",
+    "res-needed": "Recursos em falta"
   },
   "index": {
     "title": "ProxyForGame - Calculadoras para OGame",
@@ -293,8 +295,6 @@
     "research-cost-reduction": "Redução dos custos da investigação %",
     "research-time-reduction": "Redução do tempo de investigação %",
     "cargo-cap-increase": "Aumento da capacidade de carga (%): ",
-    "res-available": "Recursos disponíveis",
-    "res-needed": "Recursos em falta",
     "times-hint": "Por favor leia a nota no final da página",
     "race-1": "Humanos",
     "race-2": "Rock'tal",

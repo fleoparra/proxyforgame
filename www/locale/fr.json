@@ -164,7 +164,9 @@
     "total-lf-energy-bonus": "Bonus total des Formes de Vie à la production d'énergie",
     "lf-tech-bonus": "Bonus technologique des Formes de Vie",
     "calc-results": "Les résultats des calculs",
-    "country": "Pays"
+    "country": "Pays",
+    "res-available": "Ressources disponibles",
+    "res-needed": "Ressources manquantes"
   },
   "index": {
     "title": "ProxyForGame - l'utilité pour les jeux par navigateurs OGame",
@@ -293,8 +295,6 @@
     "research-cost-reduction": "Réduction des coûts de recherche %",
     "research-time-reduction": "Réduction du temps de recherche %",
     "cargo-cap-increase": "Aug. de la capacité de chargement (%): ",
-    "res-available": "Ressources disponibles",
-    "res-needed": "Ressources manquantes",
     "times-hint": "Veuillez lire la note au bas de la page",
     "race-1": "Les Humains",
     "race-2": "Roctas",

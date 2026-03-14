@@ -166,7 +166,9 @@
     "disr-chamber-bonus": "Disruptionskammer-Bonus",
     "total-lf-energy-bonus": "Gesamtbonus der Lebensformen auf Energieproduktion",
     "lf-tech-bonus": "Lebensformen-Technologiebonus",
-    "country": "Land"
+    "country": "Land",
+    "res-available": "Verfügbare Ressourcen",
+    "res-needed": "Ressourcen für die Bereitstellung"
   },
   "index": {
     "title": "ProxyForGame - Hilfsprogramme für das Online-Browsergame OGame",
@@ -292,8 +294,6 @@
     "research-cost-reduction": "Reduzierung der Forschungskosten %",
     "research-time-reduction": "Reduzierung der Forschungszeit %",
     "cargo-cap-increase": "Erhöhung der Frachtkapazität (%): ",
-    "res-available": "Verfügbare Ressourcen",
-    "res-needed": "Ressourcen für die Bereitstellung",
     "times-hint": "Bitte lesen Sie den Hinweis am Ende der Seite",
     "race-1": "Menschen",
     "race-2": "Rock'tal",

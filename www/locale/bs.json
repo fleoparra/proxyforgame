@@ -164,7 +164,9 @@
     "disr-chamber-bonus": "Bonus Komore za disruptiju",
     "total-lf-energy-bonus": "Ukupni bonus Oblika života za proizvodnju energije",
     "lf-tech-bonus": "Tehnološki bonus Oblika života",
-    "country": "Zemlja"
+    "country": "Zemlja",
+    "res-available": "Resources available",
+    "res-needed": "Resources to deliver"
   },
   "index": {
     "title": "ProxyForGame - alati za online igru Ogame",
@@ -296,8 +298,6 @@
     "research-cost-reduction": "Research cost reduction %",
     "research-time-reduction": "Research time reduction %",
     "cargo-cap-increase": "Cargo capacity increase (%): ",
-    "res-available": "Resources available",
-    "res-needed": "Resources to deliver",
     "times-hint": "Please read the note at the bottom of the page",
     "race-1": "Human",
     "race-2": "Rock'tal",
